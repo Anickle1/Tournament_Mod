@@ -13,6 +13,8 @@ using UnityEngine;
 using BrilliantSkies.Core.Returns.PositionAndRotation;
 using BrilliantSkies.PlayerProfiles;
 using BrilliantSkies.Ui.Displayer;
+using BrilliantSkies.Core.UniverseRepresentation.Positioning.Frames.Points;
+using BrilliantSkies.Core.Types;
 
 namespace Tournament
 {
@@ -176,7 +178,8 @@ namespace Tournament
 			InstanceSpecification.i.Header.CommonSettings.ConstructableCleanUp = (ConstructableCleanUp)1;
 
 			orbitindex = 0;
-			orbittarget = StaticConstructablesManager.constructables.ToArray()[0].UniqueId;
+            orbittarget = 0;
+            //orbittarget = StaticConstructablesManager.constructables.ToArray()[0].UniqueId;
             flycam.transform.position = (new Vector3(-500f, 50f, 0f));
             flycam.transform.rotation = (Quaternion.LookRotation(Vector3.right));
 			cammode = false;
@@ -324,10 +327,12 @@ namespace Tournament
 					orbitcam.distance = ((orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") > 0f) ? (orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") * 50f) : 0f);
 				}
 			}
-			if (orbitindex > StaticConstructablesManager.constructables.Count)
-			{
-				orbitindex = 0;
-			}
+            if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0)
+            {      
+                int index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget);
+                if(index >= 0) { orbitindex = index; }
+                else { orbitindex = 0; }
+            }
 			checked
 			{
 				if (Input.GetKeyUp((KeyCode)101))
@@ -414,8 +419,9 @@ namespace Tournament
 				else
 				{
                     //orbitcam.targetPos = StaticConstructablesManager.constructables.ToArray()[orbitindex].GameObject.FastPosition;
-                    orbitcam.OrbitTarget = new PositionAndRotationReturnTransform(StaticConstructablesManager.constructables.ToArray()[orbitindex].GameObject.transform);
-                    //todo figure out what this supposed to do
+                    Vector3d position = new Vector3d(StaticConstructablesManager.constructables.ToArray()[orbitindex].CentreOfMass);
+                    Quaternion rotation = StaticConstructablesManager.constructables.ToArray()[orbitindex].GameObject.transform.rotation;
+                    orbitcam.OrbitTarget = new PositionAndRotationReturnUniverseCoord(new UniversalTransform(position,rotation));
                 }
 			}
 		}
