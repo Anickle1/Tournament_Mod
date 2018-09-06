@@ -16,6 +16,9 @@ using BrilliantSkies.PlayerProfiles;
 using BrilliantSkies.Ui.Displayer;
 using BrilliantSkies.Core.UniverseRepresentation.Positioning.Frames.Points;
 using BrilliantSkies.Core.Types;
+using BrilliantSkies.Core.Constants;
+using BrilliantSkies.Core.FilesAndFolders;
+using Newtonsoft.Json;
 
 namespace Tournament
 {
@@ -39,7 +42,7 @@ namespace Tournament
 				Land
 			}
 		}
-
+        /*
 		public static class OPTIONS
 		{
 			public enum STANDARDRULES
@@ -60,7 +63,7 @@ namespace Tournament
 				StandardHP
 			}
 		}
-
+        */
 		public Tournament _me;
 
 		public TournamentGUI _GUI;
@@ -95,33 +98,62 @@ namespace Tournament
 
 		private bool overtime;
 
-		public float minalt = -50f;
+		public float minalt;
 
-		public float maxalt = 500f;
+		public float maxalt;
 
-		public float maxdis = 1500f;
+		public float maxdis;
 
-		public float maxoob = 120f;
+		public float maxoob;
 
-		public float maxtime = 900f;
-
-		public float maxcost = 150000f;
-
-		public float maxmat = 10000f;
+		public float maxtime;
+		
+		public float maxmat;
 
 		public float matconv = -1f;
 
-		public float spawndis = 1000f;
+		public float spawndis;
 
-		public float spawngap = 100f;
+		public float spawngap;
 
-		public float penaltyhp = 50f;
+        public float offset;
 
-		public float detection = 70f;
+        public Tournament.SPAWN.DIR Dir;
 
-        public float offset = 0f;
+        public Tournament.SPAWN.LOC Loc;
 
-		private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
+        //public float penaltyhp = 50f;
+
+        //public float detection = 70f;
+
+        //public float maxcost = 150000f;
+
+        //Defaults
+        public float minaltD = -50f;
+
+        public float maxaltD = 500f;
+
+        public float maxdisD = 1500f;
+
+        public float maxoobD = 120f;
+
+        public float maxtimeD = 900f;
+
+        public float maxmatD = 10000f;
+
+        public float matconvD = -1f;
+
+        public float spawndisD = 1000f;
+
+        public float spawngapD = 100f;
+
+        public float offsetD = 0f;
+
+        public Tournament.SPAWN.DIR DirD = Tournament.SPAWN.DIR.Facing;
+
+        public Tournament.SPAWN.LOC LocD = Tournament.SPAWN.LOC.Sea;
+
+        private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
 
 		public float t1_res;
 
@@ -151,6 +183,7 @@ namespace Tournament
 			_Right.fontSize = 12;
 			_Right.wordWrap = false;
 			_Right.clipping = (TextClipping)1;
+            loadSettings();
 		}
 
         public void loadCraft()
@@ -272,6 +305,44 @@ namespace Tournament
 			cammode = false;
             
 		}
+
+        public void saveSettings()
+        {
+            string modFolder = Get.PerminentPaths.GetSpecificModDir("Tournament").ToString();
+            FilesystemFileSource settingsFile = new FilesystemFileSource(modFolder + "settings.cfg");
+            List<float> settingsList = new List<float>();
+            settingsList.Add(minalt);
+            settingsList.Add(maxalt);
+            settingsList.Add(maxdis);
+            settingsList.Add(maxoob);
+            settingsList.Add(maxtime);
+            settingsList.Add(maxmat);
+            settingsList.Add(spawndis);
+            settingsList.Add(spawngap);
+            settingsList.Add(offset);
+            settingsList.Add((float)Dir);
+            settingsList.Add((float)Loc);
+
+            settingsFile.SaveData(settingsList, Formatting.None);
+        }
+
+        public void loadSettings()
+        {
+            string modFolder = Get.PerminentPaths.GetSpecificModDir("Tournament").ToString();
+            FilesystemFileSource settingsFile = new FilesystemFileSource(modFolder + "settings.cfg");
+            List<float> settingsList = settingsFile.LoadData<List<float>>();
+            minalt = settingsList[0];
+            maxalt = settingsList[1];
+            maxdis = settingsList[2];
+            maxoob = settingsList[3];
+            maxtime = settingsList[4];
+            maxmat = settingsList[5];
+            spawndis = settingsList[6];
+            spawngap = settingsList[7];
+            offset = settingsList[8];
+            Dir = (SPAWN.DIR)settingsList[9];
+            Loc = (SPAWN.LOC)settingsList[10];
+        }
 
 		public unsafe void OnGUI()
 		{

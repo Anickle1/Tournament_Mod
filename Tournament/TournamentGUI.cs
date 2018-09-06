@@ -19,10 +19,6 @@ namespace Tournament
 
         public BrilliantSkies.ScriptableObjects.SO_LoadVehicleGUI _Style;
 
-        private Tournament.SPAWN.DIR Dir;
-
-		private Tournament.SPAWN.LOC Loc = Tournament.SPAWN.LOC.Sea;
-
         private Tournament t;
 
 		public TournamentGUI(Tournament tourny)
@@ -70,15 +66,35 @@ namespace Tournament
 			t.maxtime = GUISliders.DisplaySlider(6, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
 			//t.maxcost = GUISliders.DisplaySlider(7, "Max Design Cost", t.maxcost, 0f, 1E+07f, 0, new ToolTip("Max design cost, Currently doesn't effect anything"));
 			t.maxmat = GUISliders.DisplaySlider(7, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
-			//t.matconv = GUISliders.DisplaySlider(9, "Dmg to Mat %", t.matconv, -1f, 100f, 0, new ToolTip("Damage to material conversion, -1 disables self/team damage material return"));
-			/*t.srules = Convert.ToBoolean(GUISliders.DisplaySlider(10, ((Tournament.OPTIONS.STANDARDRULES)Convert.ToInt32(t.srules)).ToString(), (float)Convert.ToInt32(t.srules), 0f, 1f, 0, new ToolTip("Standard despawn rules, or customise")));
+            //t.matconv = GUISliders.DisplaySlider(9, "Dmg to Mat %", t.matconv, -1f, 100f, 0, new ToolTip("Damage to material conversion, -1 disables self/team damage material return"));
+            /*t.srules = Convert.ToBoolean(GUISliders.DisplaySlider(10, ((Tournament.OPTIONS.STANDARDRULES)Convert.ToInt32(t.srules)).ToString(), (float)Convert.ToInt32(t.srules), 0f, 1f, 0, new ToolTip("Standard despawn rules, or customise")));
 			if (!t.srules)
 			{
 				t.penaltynoai = Convert.ToBoolean(GUISliders.DisplaySlider(11, ((Tournament.OPTIONS.AIPENALTY)Convert.ToInt32(t.penaltynoai)).ToString(), (float)Convert.ToInt32(t.penaltynoai), 0f, 1f, 0, new ToolTip("Does having no AI left add to penalty time?")));
 				t.standardhp = Convert.ToBoolean(GUISliders.DisplaySlider(12, ((Tournament.OPTIONS.HPMODE)Convert.ToInt32(t.standardhp)).ToString(), (float)Convert.ToInt32(t.standardhp), 0f, 1f, 0, new ToolTip("Calculate HP by % of alive blocks or % of alive block costs")));
 				t.penaltyhp = GUISliders.DisplaySlider(13, "HP Penalty %", t.penaltyhp, 0f, 100f, 0, new ToolTip("Adds to penalty time when below hp %, 0 disables"));
 			}*/
-            
+            if (GUI.Button(new Rect(50f, 480f, 200f, 50f), "Save Settings"))
+            {
+                GUISoundManager.GetSingleton().PlayBeep();
+                t.saveSettings();
+            }
+
+            if (GUI.Button(new Rect(300f, 480f, 200f, 50f), "Restore Defaults"))
+            {
+                GUISoundManager.GetSingleton().PlayBeep();
+                t.spawndis =  t.spawndisD;
+                t.spawngap = t.spawngapD;
+                t.minalt = t.minaltD;
+                t.maxalt = t.maxaltD;
+                t.maxdis = t.maxdisD;
+                t.maxoob = t.maxoobD;
+                t.maxtime = t.maxtimeD;
+                t.maxmat = t.maxmatD;
+                t.Dir = t.DirD;
+                t.Loc = t.LocD;
+                t.offset = t.offsetD;
+            }
             GUILayout.EndScrollView();
 			GUILayout.EndArea();
 			GUILayout.BeginArea(new Rect(0f, 580f, 940f, 200f), "Spawn Settings", GUI.skin.window);
@@ -86,8 +102,8 @@ namespace Tournament
 			GUISliders.TextWidth = 240;
 			GUISliders.DecimalPlaces = 0;
 			GUISliders.UpperMargin = 40;
-			Dir = (Tournament.SPAWN.DIR)checked((int)unchecked(GUISliders.DisplaySlider(0, Dir.ToString(), (float)Dir, 0f, 3f, 0, new ToolTip("Direction"))));
-			Loc = (Tournament.SPAWN.LOC)checked((int)unchecked(GUISliders.DisplaySlider(1, Loc.ToString(), (float)Loc, 0f, 3f, 0, new ToolTip("Location"))));
+			t.Dir = (Tournament.SPAWN.DIR)checked((int)unchecked(GUISliders.DisplaySlider(0, t.Dir.ToString(), (float)t.Dir, 0f, 3f, 0, new ToolTip("Direction"))));
+			t.Loc = (Tournament.SPAWN.LOC)checked((int)unchecked(GUISliders.DisplaySlider(1, t.Loc.ToString(), (float)t.Loc, 0f, 3f, 0, new ToolTip("Location"))));
             t.offset = GUISliders.DisplaySlider(2, "Height Offset", t.offset, -100f, 100f, 0, new ToolTip("Height Offset from location"));
             if (_treeSelector.CurrentData != null)
 			{
@@ -96,8 +112,8 @@ namespace Tournament
 					GUISoundManager.GetSingleton().PlayBeep();
 					TournamentEntry tournamentEntry = new TournamentEntry();
 					tournamentEntry.IsKing = true;
-					tournamentEntry.spawn_direction = Dir;
-					tournamentEntry.spawn_location = Loc;
+					tournamentEntry.spawn_direction = t.Dir;
+					tournamentEntry.spawn_location = t.Loc;
                     tournamentEntry.offset = t.offset;
                     tournamentEntry.bpf = _treeSelector.CurrentData;
 					t.entry_t1.Add(tournamentEntry);
@@ -107,8 +123,8 @@ namespace Tournament
 					GUISoundManager.GetSingleton().PlayBeep();
 					TournamentEntry tournamentEntry2 = new TournamentEntry();
 					tournamentEntry2.IsKing = false;
-					tournamentEntry2.spawn_direction = Dir;
-					tournamentEntry2.spawn_location = Loc;
+					tournamentEntry2.spawn_direction = t.Dir;
+					tournamentEntry2.spawn_location = t.Loc;
                     tournamentEntry2.offset = t.offset;
                     tournamentEntry2.bpf = _treeSelector.CurrentData;
 					t.entry_t2.Add(tournamentEntry2);
