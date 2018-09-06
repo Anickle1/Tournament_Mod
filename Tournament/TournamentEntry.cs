@@ -8,6 +8,14 @@ using BrilliantSkies.Ftd.Planets.Instances.Factions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using BrilliantSkies.Modding.Containers;
+using BrilliantSkies.Modding;
+using BrilliantSkies.Modding.Types;
+using BrilliantSkies.Core.Help;
+using BrilliantSkies.Core.UniverseRepresentation;
+using BrilliantSkies.Core.Types;
+using BrilliantSkies.Core.Modding;
+using BrilliantSkies.Core;
 
 namespace Tournament
 {
@@ -131,8 +139,14 @@ namespace Tournament
 
 		public void Spawn(float dis, float gap, int count, int pos)
 		{
-			MainConstruct val = BlueprintConverter.Convert(bp, 0, true);
-			team_id = (IsKing ? InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id : 
+            MainConstruct val = BlueprintConverter.Convert(bp, 0, true);
+            /*val.Drone.myJustLoadedDrones.Clear();
+            foreach (MainConstruct m in val.MainArrayBasics.SVList)
+            {
+                m.GenUniqueID();
+                val.Drone.myJustLoadedDrones.Add(m);
+            }*/
+            team_id = (IsKing ? InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id : 
                 InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "CHAL").Id);
             //BlueprintConverter.Initiate(val, VLoc(gap, count, pos, dis), VDir(), team_id, null, 0);
             BrilliantSkies.Core.Types.Vector3d vector3D = new BrilliantSkies.Core.Types.Vector3d(VLoc(gap, count, pos, dis));

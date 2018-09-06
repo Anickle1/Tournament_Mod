@@ -21,7 +21,13 @@ namespace Tournament
 			set;
 		}
 
-		public string BlueprintName
+        public int MothershipId
+        {
+            get;
+            set;
+        }
+
+        public string BlueprintName
 		{
 			get;
 			set;

@@ -8,6 +8,7 @@ using BrilliantSkies.Ftd.Avatar;
 using BrilliantSkies.Core.Id;
 using BrilliantSkies.Ftd.Avatar.Movement;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using BrilliantSkies.Core.Returns.PositionAndRotation;
@@ -120,7 +121,7 @@ namespace Tournament
 
         public float offset = 0f;
 
-		private SortedDictionary<int, SortedDictionary<int, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<int, TournamentParticipant>>();
+		private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
 
 		public float t1_res;
 
@@ -183,22 +184,49 @@ namespace Tournament
             flycam.transform.position = (new Vector3(-500f, 50f, 0f));
             flycam.transform.rotation = (Quaternion.LookRotation(Vector3.right));
 			cammode = false;
-			foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
+            foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
 			{
+                /*Debug.Log("Startmatch ID: "+constructable.UniqueId);
+                if (constructable.Drone.loadedMothershipC != null)
+                {
+                    Debug.Log("Startmatch mothership ID: " + constructable.Drone.loadedMothershipC.UniqueId);
+                    constructable.GenUniqueID();
+                    Debug.Log("Startmatch gen'd ID: " + constructable.UniqueId);
+                    foreach (MainConstruct mother in from t in StaticConstructablesManager.constructables
+                                                     where t.UniqueId == constructable.Drone.loadedMothershipC.UniqueId
+                                                     select t)
+                    {
+                        Debug.Log("Startmatch adding: " + constructable.UniqueId + " to "+mother.uniqueID);
+                        mother.Drone.myJustLoadedDrones.Clear();
+                        mother.Drone.myJustLoadedDrones.Add(constructable);
+                        mother.Drone.FirstFrameSetup();
+                    }
+                    
+                }*/
+                int id = 0;
+                if (constructable.Drone.loadedMothershipC != null)
+                {
+                    id = constructable.Drone.loadedMothershipC.UniqueId;
+                }
+                string key = "" + constructable.UniqueId + "," + id;
+
                 if (!HUDLog.ContainsKey((constructable.GetTeam()).Id))
 				{
-					HUDLog.Add((constructable.GetTeam()).Id, new SortedDictionary<int, TournamentParticipant>());
+					HUDLog.Add((constructable.GetTeam()).Id, new SortedDictionary<string, TournamentParticipant>());
 				}
-				constructable.GenUniqueID();
-				if (!HUDLog[(constructable.GetTeam()).Id].ContainsKey(constructable.UniqueId))
+                //constructable.GenUniqueID();
+               
+                if (!HUDLog[(constructable.GetTeam()).Id].ContainsKey(key))
 				{
-					HUDLog[(constructable.GetTeam()).Id].Add(constructable.UniqueId, new TournamentParticipant
-					{
-						TeamId = constructable.GetTeam(),
-						TeamName = constructable.GetTeam().FactionSpec().AbreviatedName,
-						UniqueId = constructable.UniqueId,
-						BlueprintName = constructable.GetBlueprintName(),
-						AICount = constructable.BlockTypeStorage.MainframeStore.Blocks.Count,
+                    HUDLog[(constructable.GetTeam()).Id].Add(key, new TournamentParticipant
+                    {
+                        TeamId = constructable.GetTeam(),
+                        TeamName = constructable.GetTeam().FactionSpec().AbreviatedName,
+                        UniqueId = constructable.UniqueId,
+                        MothershipId = id,
+                        //BlueprintName = constructable.GetBlueprintName(),
+                        BlueprintName = constructable.GetName(),
+                        AICount = constructable.BlockTypeStorage.MainframeStore.Blocks.Count,
 						HP = ((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (constructable.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (constructable.iMainStatus.GetFractionAliveBlocks() * 100f)),
 						HPCUR = (float)((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? constructable.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : constructable.iMainStatus.GetNumberAliveBlocks()),
 						HPMAX = (float)((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? constructable.iMainStatus.GetNumberBlocksIncludingSubConstructables() : constructable.iMainStatus.GetNumberBlocks())
@@ -250,21 +278,21 @@ namespace Tournament
 			GUI.matrix = (Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1f * (float)Screen.width / 1280f, 1f * (float)Screen.height / 800f, 1f)));
 			GUI.backgroundColor = new Color(0f, 0f, 0f, 0.6f);
 			GUI.Label(new Rect(590f, 0f, 100f, 30f), $"{Math.Floor((double)(timerTotal / 60f))}m {Math.Floor((double)timerTotal) % 60.0}s", _Top);
-			foreach (KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> item in HUDLog)
+			foreach (KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> item in HUDLog)
 			{
 				int num = 0;
 				int id = entry_t1[0].team_id.Id;
-				KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> keyValuePair = item;
+				KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> keyValuePair = item;
 				bool flag = id == keyValuePair.Key;
 				string text = "";
 				int num2 = 1;
-				SortedDictionary<int, SortedDictionary<int, TournamentParticipant>> hUDLog = HUDLog;
-				KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> keyValuePair2 = item;
+				SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> hUDLog = HUDLog;
+				KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> keyValuePair2 = item;
 				int count = hUDLog[keyValuePair2.Key].Values.Count;
 				float num3 = 0f;
 				float num4 = 0f;
-				KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> keyValuePair3 = item;
-				foreach (KeyValuePair<int, TournamentParticipant> item2 in keyValuePair3.Value)
+				KeyValuePair<int, SortedDictionary<String, TournamentParticipant>> keyValuePair3 = item;
+				foreach (KeyValuePair<string, TournamentParticipant> item2 in keyValuePair3.Value)
 				{
 					if (!item2.Value.Disqual && !item2.Value.Scrapping && item2.Value.AICount != 0)
 					{
@@ -285,7 +313,7 @@ namespace Tournament
 							{
 								
 								int id3 = f.Id.Id;
-								KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> keyValuePair5 = item;
+								KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> keyValuePair5 = item;
 								return id3 == keyValuePair5.Key;
 							}).InstanceOfFaction.ResourceStore.Material, text), _Left);
 						}
@@ -294,7 +322,7 @@ namespace Tournament
 							GUI.Label(new Rect(1080f, 0f, 200f, 38f + 16f * (float)count), string.Format("<color=cyan>{2}M</color> <color=#ffa500ff>{1,4}</color> {0,6}\n{3}", "Team 2", Math.Round((double)(num3 / num4 * 100f), 1) + "%", (object)FactionSpecifications.i.Factions.Find(delegate(FactionSpecificationFaction f)
 							{
 								int id2 = f.Id.Id;
-								KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> keyValuePair4 = item;
+								KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> keyValuePair4 = item;
 								return id2 == keyValuePair4.Key;
 							}).InstanceOfFaction.ResourceStore.Material, text), _Right);
 						}
@@ -453,13 +481,21 @@ namespace Tournament
 				MainConstruct[] array = StaticConstructablesManager.constructables.ToArray();
 				foreach (MainConstruct val in array)
 				{
+                    //Debug.Log("FixedUpdate ID: " + val.UniqueId);
+                    int id = 0;
+                    if (val.Drone.loadedMothershipC != null)
+                    {
+                        id = val.Drone.loadedMothershipC.UniqueId;
+                    }
+                    string key = "" + val.UniqueId + "," + id;
+                    //Debug.Log("FixedUpdate mothership ID: " + val.Drone.loadedMothershipC.UniqueId);
                     //if (!HUDLog[((IntPtr)(void*)val.GetTeam()).Id][val.get_UniqueId()].Disqual || !HUDLog[((IntPtr)(void*)val.GetTeam()).Id][val.get_UniqueId()].Scrapping)
-                    if (!HUDLog[(val.GetTeam()).Id][val.UniqueId].Disqual || !HUDLog[(val.GetTeam()).Id][val.UniqueId].Scrapping)
+                    if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
 					{
-						HUDLog[(val.GetTeam()).Id][val.UniqueId].AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count;
+						HUDLog[(val.GetTeam()).Id][key].AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count;
 						if ((val.CentreOfMass).y < minalt || (val.CentreOfMass).y > maxalt)
 						{
-							HUDLog[(val.GetTeam()).Id][val.UniqueId].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+							HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
 						}
 						else
 						{
@@ -489,10 +525,10 @@ namespace Tournament
 							}
 							if (num > maxdis && num < num2)
 							{
-								HUDLog[(val.GetTeam()).Id][val.UniqueId].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+								HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
 							}
 						}
-						HUDLog[(val.GetTeam()).Id][val.UniqueId].Disqual = (HUDLog[(val.GetTeam()).Id][val.UniqueId].OoBTime > maxoob);
+						HUDLog[(val.GetTeam()).Id][key].Disqual = (HUDLog[(val.GetTeam()).Id][key].OoBTime > maxoob);
 					}
 				}
 				timerTotal += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
@@ -505,62 +541,78 @@ namespace Tournament
 			MainConstruct[] array = StaticConstructablesManager.constructables.ToArray();
 			foreach (MainConstruct val in array)
 			{
-				if (!HUDLog[(val.GetTeam()).Id][val.UniqueId].Disqual || !HUDLog[(val.GetTeam()).Id][val.UniqueId].Scrapping)
+                int id = 0;
+                if (val.Drone.loadedMothershipC != null)
+                {
+                    id = val.Drone.loadedMothershipC.UniqueId;
+                }
+                string key = "" + val.UniqueId + "," + id;
+                if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
 				{
-					HUDLog[(val.GetTeam()).Id][val.UniqueId].HPCUR = (float)val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables();
-					HUDLog[(val.GetTeam()).Id][val.UniqueId].HP = val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f;
+					HUDLog[(val.GetTeam()).Id][key].HPCUR = (float)val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables();
+					HUDLog[(val.GetTeam()).Id][key].HP = val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f;
 				}
 				else
 				{
-					HUDLog[(val.GetTeam()).Id][val.UniqueId].HPCUR = 0f;
-					HUDLog[(val.GetTeam()).Id][val.UniqueId].HP = 0f;
+					HUDLog[(val.GetTeam()).Id][key].HPCUR = 0f;
+					HUDLog[(val.GetTeam()).Id][key].HP = 0f;
 				}
 			}
-			foreach (KeyValuePair<int, SortedDictionary<int, TournamentParticipant>> item in HUDLog)
+			foreach (KeyValuePair<int, SortedDictionary<string, TournamentParticipant>> item in HUDLog)
 			{
-				foreach (KeyValuePair<int, TournamentParticipant> item2 in HUDLog[item.Key])
+				foreach (KeyValuePair<string, TournamentParticipant> item2 in HUDLog[item.Key])
 				{
 					List<MainConstruct> constructables = StaticConstructablesManager.constructables;
 					List<MainConstruct> constructables2 = StaticConstructablesManager.constructables;
 					Predicate<MainConstruct> match = delegate(MainConstruct c)
 					{
 						ObjectId team3 = c.GetTeam();
-						KeyValuePair<int, TournamentParticipant> keyValuePair9 = item2;
+						KeyValuePair<string, TournamentParticipant> keyValuePair9 = item2;
 						if (team3 == keyValuePair9.Value.TeamId)
 						{
-							int uniqueId3 = c.UniqueId;
-							KeyValuePair<int, TournamentParticipant> keyValuePair10 = item2;
+                            int id3 = 0;
+                            if (c.Drone.loadedMothershipC != null)
+                            {
+                                id3 = c.Drone.loadedMothershipC.UniqueId;
+                            }
+                            string uniqueId3 = "" + c.UniqueId + "," + id3;
+							KeyValuePair<string, TournamentParticipant> keyValuePair10 = item2;
 							return uniqueId3 == keyValuePair10.Key;
 						}
 						return false;
 					};
 					if (constructables.Contains(constructables2.Find(match)))
 					{
-						SortedDictionary<int, TournamentParticipant> sortedDictionary = HUDLog[item.Key];
-						KeyValuePair<int, TournamentParticipant> keyValuePair = item2;
+						SortedDictionary<string, TournamentParticipant> sortedDictionary = HUDLog[item.Key];
+						KeyValuePair<string, TournamentParticipant> keyValuePair = item2;
 						if (!sortedDictionary[keyValuePair.Key].Disqual)
 						{
 							continue;
 						}
 					}
-					SortedDictionary<int, TournamentParticipant> sortedDictionary2 = HUDLog[item.Key];
-					KeyValuePair<int, TournamentParticipant> keyValuePair2 = item2;
+					SortedDictionary<string, TournamentParticipant> sortedDictionary2 = HUDLog[item.Key];
+					KeyValuePair<string, TournamentParticipant> keyValuePair2 = item2;
 					if (!sortedDictionary2[keyValuePair2.Key].Scrapping)
 					{
-						SortedDictionary<int, TournamentParticipant> sortedDictionary3 = HUDLog[item.Key];
-						KeyValuePair<int, TournamentParticipant> keyValuePair3 = item2;
+						SortedDictionary<string, TournamentParticipant> sortedDictionary3 = HUDLog[item.Key];
+						KeyValuePair<string, TournamentParticipant> keyValuePair3 = item2;
 						sortedDictionary3[keyValuePair3.Key].HPCUR = 0f;
-						SortedDictionary<int, TournamentParticipant> sortedDictionary4 = HUDLog[item.Key];
-						KeyValuePair<int, TournamentParticipant> keyValuePair4 = item2;
+						SortedDictionary<string, TournamentParticipant> sortedDictionary4 = HUDLog[item.Key];
+						KeyValuePair<string, TournamentParticipant> keyValuePair4 = item2;
 						sortedDictionary4[keyValuePair4.Key].Scrapping = true;
 						Vector3 centreOfMass = StaticConstructablesManager.constructables.Find(delegate(MainConstruct c)
 						{
 							ObjectId team2 = c.GetTeam();
-							KeyValuePair<int, TournamentParticipant> keyValuePair7 = item2;
+							KeyValuePair<string, TournamentParticipant> keyValuePair7 = item2;
 							if (team2 == keyValuePair7.Value.TeamId)
 							{
-								int uniqueId2 = c.UniqueId;
-								KeyValuePair<int, TournamentParticipant> keyValuePair8 = item2;
+                                int id2 = 0;
+                                if (c.Drone.loadedMothershipC != null)
+                                {
+                                    id2 = c.Drone.loadedMothershipC.UniqueId;
+                                }
+                                string uniqueId2 = "" + c.UniqueId + "," + id2;
+                                KeyValuePair<string, TournamentParticipant> keyValuePair8 = item2;
 								return uniqueId2 == keyValuePair8.Key;
 							}
 							return false;
@@ -569,12 +621,17 @@ namespace Tournament
 						StaticConstructablesManager.constructables.Find(delegate(MainConstruct c)
 						{
 							ObjectId team = c.GetTeam();
-							KeyValuePair<int, TournamentParticipant> keyValuePair5 = item2;
+							KeyValuePair<string, TournamentParticipant> keyValuePair5 = item2;
 							if (team == keyValuePair5.Value.TeamId)
 							{
-								int uniqueId = c.UniqueId;
-								KeyValuePair<int, TournamentParticipant> keyValuePair6 = item2;
-								return uniqueId == keyValuePair6.Key;
+                                int id1 = 0;
+                                if (c.Drone.loadedMothershipC != null)
+                                {
+                                    id1 = c.Drone.loadedMothershipC.UniqueId;
+                                }
+                                string uniqueId1 = "" + c.UniqueId + "," + id1;
+                                KeyValuePair<string, TournamentParticipant> keyValuePair6 = item2;
+								return uniqueId1 == keyValuePair6.Key;
 							}
 							return false;
 						}).DestroyCompletely(true);
