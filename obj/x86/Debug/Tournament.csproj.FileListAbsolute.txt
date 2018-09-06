@@ -380,8 +380,8 @@ C:\repos\Tournament_Mod\bin\Debug\UnityEngine.VideoModule.xml
 C:\repos\Tournament_Mod\bin\Debug\UnityEngine.VRModule.xml
 C:\repos\Tournament_Mod\bin\Debug\UnityEngine.WebModule.xml
 C:\repos\Tournament_Mod\bin\Debug\UnityEngine.WindModule.xml
-C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojResolveAssemblyReference.cache
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csproj.CoreCompileInputs.cache
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csproj.CopyComplete
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.dll
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.pdb
+C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojResolveAssemblyReference.cache

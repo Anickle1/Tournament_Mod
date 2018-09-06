@@ -19,6 +19,9 @@ using BrilliantSkies.Core.Types;
 using BrilliantSkies.Core.Constants;
 using BrilliantSkies.Core.FilesAndFolders;
 using Newtonsoft.Json;
+using BrilliantSkies.Core.UniverseRepresentation;
+using BrilliantSkies.Ftd.Planets;
+using BrilliantSkies.Ftd.Planets.World;
 
 namespace Tournament
 {
@@ -42,28 +45,7 @@ namespace Tournament
 				Land
 			}
 		}
-        /*
-		public static class OPTIONS
-		{
-			public enum STANDARDRULES
-			{
-				CustomRules,
-				StandardRules
-			}
 
-			public enum AIPENALTY
-			{
-				NoAIPenaltyOff,
-				NoAIPenaltyOn
-			}
-
-			public enum HPMODE
-			{
-				ResourceHP,
-				StandardHP
-			}
-		}
-        */
 		public Tournament _me;
 
 		public TournamentGUI _GUI;
@@ -122,11 +104,13 @@ namespace Tournament
 
         public Tournament.SPAWN.LOC Loc;
 
-        //public float penaltyhp = 50f;
+        public int northSouthBoard;
 
-        //public float detection = 70f;
+        public int eastWestBoard;
 
-        //public float maxcost = 150000f;
+        public int defaultKeys;
+
+        public bool defaultKeysBool;
 
         //Defaults
         public float minaltD = -50f;
@@ -153,6 +137,13 @@ namespace Tournament
 
         public Tournament.SPAWN.LOC LocD = Tournament.SPAWN.LOC.Sea;
 
+        public int northSouthBoardD = 0;
+
+        public int eastWestBoardD = 0;
+
+        public int defaultKeysD = 1;
+
+
         private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
 
 		public float t1_res;
@@ -167,22 +158,26 @@ namespace Tournament
 		{
 			_me = this;
 			_GUI = new TournamentGUI(_me);
+
 			_Top = new GUIStyle(LazyLoader.HUD.Get().interactionStyle);
             _Top.alignment = (TextAnchor)4;
             _Top.richText = true;
             _Top.fontSize = 12;
-            _Left = new GUIStyle(LazyLoader.HUD.Get().interactionStyle);;
+
+            _Left = new GUIStyle(LazyLoader.HUD.Get().interactionStyle);
             _Left.alignment = 0;
 			_Left.richText = true;
 			_Left.fontSize = 12;
 			_Left.wordWrap = false;
 			_Left.clipping = (TextClipping)1;
+
 			_Right = new GUIStyle(LazyLoader.HUD.Get().interactionStyle);
 			_Right.alignment = (TextAnchor)2;
 			_Right.richText = true;
 			_Right.fontSize = 12;
 			_Right.wordWrap = false;
 			_Right.clipping = (TextClipping)1;
+
             loadSettings();
 		}
 
@@ -267,6 +262,7 @@ namespace Tournament
 				}
 			}
             started = true;
+            GameEvents.UpdateEvent -= UpdateBoardSectionPreview;
             GameEvents.PreLateUpdate += LateUpdate;
             GameEvents.Twice_Second += SlowUpdate;
             GameEvents.FixedUpdateEvent += FixedUpdate;
@@ -300,14 +296,38 @@ namespace Tournament
             orbitcam.OperateRegardlessOfUiOptions = true;
 			orbitcam.distance = 100f;
 			orbitcam.enabled = false;
-			orbittarget = 0;
+			orbittarget = StaticConstructablesManager.constructables[0].UniqueId;
 			orbitindex = 0;
 			cammode = false;
             
 		}
 
+        public void MoveCam()
+        {
+            cam.transform.position = FramePositionOfBoardSection() + new Vector3(0, 50, 0);
+        }
+
+        public Vector3 FramePositionOfBoardSection()
+        {
+            return PlanetList.MainFrame.UniversalPositionToFramePosition(UniversalPositionOfBoardSection());
+        }
+
+        public Vector3d UniversalPositionOfBoardSection()
+        {
+            return StaticCoordTransforms.BoardSectionToUniversalPosition(WorldSpecification.i.BoardLayout.BoardSections[eastWestBoard, northSouthBoard].BoardSectionCoords);
+        }
+
         public void saveSettings()
         {
+            if (defaultKeysBool == true)
+            {
+                defaultKeys = 1;
+            }
+            else
+            {
+                defaultKeys = 0;
+            }
+
             string modFolder = Get.PerminentPaths.GetSpecificModDir("Tournament").ToString();
             FilesystemFileSource settingsFile = new FilesystemFileSource(modFolder + "settings.cfg");
             List<float> settingsList = new List<float>();
@@ -322,6 +342,9 @@ namespace Tournament
             settingsList.Add(offset);
             settingsList.Add((float)Dir);
             settingsList.Add((float)Loc);
+            settingsList.Add((float)defaultKeys);
+            settingsList.Add((float)eastWestBoard);
+            settingsList.Add((float)northSouthBoard);
 
             settingsFile.SaveData(settingsList, Formatting.None);
         }
@@ -330,18 +353,65 @@ namespace Tournament
         {
             string modFolder = Get.PerminentPaths.GetSpecificModDir("Tournament").ToString();
             FilesystemFileSource settingsFile = new FilesystemFileSource(modFolder + "settings.cfg");
-            List<float> settingsList = settingsFile.LoadData<List<float>>();
-            minalt = settingsList[0];
-            maxalt = settingsList[1];
-            maxdis = settingsList[2];
-            maxoob = settingsList[3];
-            maxtime = settingsList[4];
-            maxmat = settingsList[5];
-            spawndis = settingsList[6];
-            spawngap = settingsList[7];
-            offset = settingsList[8];
-            Dir = (SPAWN.DIR)settingsList[9];
-            Loc = (SPAWN.LOC)settingsList[10];
+            if (settingsFile.Exists)
+            {
+                List<float> settingsList = settingsFile.LoadData<List<float>>();
+
+                minalt = settingsList[0];
+                maxalt = settingsList[1];
+                maxdis = settingsList[2];
+                maxoob = settingsList[3];
+                maxtime = settingsList[4];
+                maxmat = settingsList[5];
+                spawndis = settingsList[6];
+                spawngap = settingsList[7];
+                offset = settingsList[8];
+                Dir = (SPAWN.DIR)settingsList[9];
+                Loc = (SPAWN.LOC)settingsList[10];
+                defaultKeys = (int)settingsList[11];
+                eastWestBoard = (int)settingsList[12];
+                northSouthBoard = (int)settingsList[13];
+
+                if(defaultKeys == 1)
+                {
+                    defaultKeysBool = true;
+                }
+                else
+                {
+                    defaultKeysBool = false;
+                }
+            }
+            else
+            {
+                loadDefaults();
+            }
+        }
+
+
+        public void loadDefaults()
+        {
+            spawndis = spawndisD;
+            spawngap = spawngapD;
+            minalt = minaltD;
+            maxalt = maxaltD;
+            maxdis = maxdisD;
+            maxoob = maxoobD;
+            maxtime = maxtimeD;
+            maxmat = maxmatD;
+            Dir = DirD;
+            Loc = LocD;
+            offset = offsetD;
+            defaultKeys = defaultKeysD;
+            eastWestBoard = eastWestBoardD;
+            northSouthBoard = northSouthBoardD;
+            if (defaultKeys == 1)
+            {
+                defaultKeysBool = true;
+            }
+            else
+            {
+                defaultKeysBool = false;
+            }
         }
 
 		public unsafe void OnGUI()
@@ -407,17 +477,60 @@ namespace Tournament
 			}
 		}
 
-		public void LateUpdate()
+        public void UpdateBoardSectionPreview(ITimeStep dt)
+        {
+            cam.transform.Rotate(0, (float)(15 * dt.PhysicalDeltaTime.Seconds), 0);//15° rotation per second
+        }
+
+        public void LateUpdate()
 		{
-			
-			if (Input.GetKeyUp((KeyCode)292))
+            FtdKeyMap ftdKeyMap = ProfileManager.Instance.GetModule<FtdKeyMap>();
+
+            bool pause = false;
+            bool next = false;
+            bool previous = false;
+            bool shift = false;
+            bool freecamOn = false;
+            bool orbitcamOn = false;
+
+            switch (defaultKeysBool)
+            {
+                case false:
+                    pause = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.PauseGame).Key);
+                    shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
+                    next = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.InventoryUi).Key);
+                    previous = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.Interact).Key);
+                    freecamOn = Input.GetMouseButtonUp(1); // technically same as default atm
+                    orbitcamOn = Input.GetMouseButtonUp(0); // technically same as default atm
+                    break;
+                case true:
+                    pause = Input.GetKeyUp((KeyCode)292); // default f11
+                    shift = Input.GetKey((KeyCode)303) || Input.GetKey((KeyCode)304);
+                    next = Input.GetKeyUp((KeyCode)101); // default e
+                    previous = Input.GetKeyUp((KeyCode)113); // default q
+                    freecamOn = Input.GetKeyUp((KeyCode)324); // default left click
+                    orbitcamOn = Input.GetKeyUp((KeyCode)323); // default right click
+                    break;
+            }
+
+            if (pause)
 			{
                 //Time.set_timeScale((Time.get_timeScale() > 0f) ? 0f : 1f);
                 Time.timeScale = ((Time.timeScale > 0f) ? 0f : 1f);
             }
+            if (shift)
+            {
+                orbitcam.xSpeed = 1000;
+                orbitcam.ySpeed = 480;
+            }
+            else
+            {
+                orbitcam.xSpeed = 250;
+                orbitcam.ySpeed = 120;
+            }
 			if (Input.GetAxis("Mouse ScrollWheel") != 0f)
 			{
-				if (Input.GetKey((KeyCode)303) || Input.GetKey((KeyCode)304))
+				if (shift)
 				{
 					orbitcam.distance = ((orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") > 0f) ? (orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") * 100f) : 0f);
 				}
@@ -434,7 +547,7 @@ namespace Tournament
             }
 			checked
 			{
-				if (Input.GetKeyUp((KeyCode)101))
+				if (next)
 				{
 					Debug.Log(unchecked((object)(StaticConstructablesManager.constructables.Count + " " + orbitindex)));
 					if (orbitindex + 1 >= StaticConstructablesManager.constructables.Count)
@@ -448,7 +561,7 @@ namespace Tournament
 						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
 					}
 				}
-				if (Input.GetKeyUp((KeyCode)113))
+				if (previous)
 				{
 					if (orbitindex == 0)
 					{
@@ -461,20 +574,24 @@ namespace Tournament
 						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
 					}
 				}
-				if (Input.GetKeyUp((KeyCode)323))
+
+                if (orbittarget != StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId)
+                {
+                    orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                }
+
+                if (orbitcamOn && StaticConstructablesManager.constructables.Count != 0)
 				{
 					flycam.enabled = false;
 					orbitcam.enabled = true;
-					cammode = true;
 				}
-				else if (Input.GetKeyUp((KeyCode)324))
+				else if (freecamOn)
 				{
 					orbitcam.enabled = false;
 					flycam.enabled = true;
 					flycam.transform.rotation = orbitcam.transform.rotation;
-					cammode = false;
 				}
-				if (!cammode)
+				if (flycam.enabled && defaultKeysBool)
 				{
                     //Vector3 val = new Vector3(Input.GetAxisRaw("Sidestep"), Input.GetKey((KeyCode)32) ? 1f : ((Input.GetKey((KeyCode)308) | Input.GetKey((KeyCode)307)) ? (-1f) : 0f), Input.GetAxisRaw("ForwardsBackwards"));
                     float x = 0;
@@ -505,23 +622,33 @@ namespace Tournament
                         z -= 1;
                     }
                     Vector3 val = new Vector3(x, y, z);
-                    if (Input.GetKey((KeyCode)303) || Input.GetKey((KeyCode)304))
+                    if (shift)
 					{
 						val = Vector3.Scale(val, new Vector3(5f, 5f, 5f)); // increase vector with shift
                     }
                     flycam.transform.position = flycam.transform.position + flycam.transform.localRotation * val;
                 }
-				else if (orbittarget != StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId)
-				{
-					orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
-				}
-				else
-				{
-                    //orbitcam.targetPos = StaticConstructablesManager.constructables.ToArray()[orbitindex].GameObject.FastPosition;
-                    Vector3d position = new Vector3d(StaticConstructablesManager.constructables.ToArray()[orbitindex].CentreOfMass);
-                    Quaternion rotation = StaticConstructablesManager.constructables.ToArray()[orbitindex].GameObject.transform.rotation;
-                    orbitcam.OrbitTarget = new PositionAndRotationReturnUniverseCoord(new UniversalTransform(position,rotation));
+                if (flycam.enabled && !defaultKeysBool)
+                {
+                    Vector3 movement = ftdKeyMap.GetMovemementDirection() * (shift ? 5 : 1);
+                    flycam.transform.position += flycam.transform.localRotation * movement;
                 }
+                else if (orbitcam.enabled)
+                {
+                    if (StaticConstructablesManager.constructables.Count == 0)
+                    {
+                        flycam.enabled = true;
+                        orbitcam.enabled = false;
+                    }
+                    else
+                    {
+                        Vector3d position = PlanetList.MainFrame.FramePositionToUniversalPosition(StaticConstructablesManager.constructables.ToArray()[orbitindex].CentreOfMass);
+                        Quaternion rotation = StaticConstructablesManager.constructables.ToArray()[orbitindex].SafeRotation;
+                        orbitcam.OrbitTarget = new PositionAndRotationReturnUniverseCoord(new UniversalTransform(position, rotation));
+                    }
+                }
+                
+                
 			}
 		}
 

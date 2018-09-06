@@ -148,10 +148,9 @@ namespace Tournament
             }*/
             team_id = (IsKing ? InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id : 
                 InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "CHAL").Id);
-            //BlueprintConverter.Initiate(val, VLoc(gap, count, pos, dis), VDir(), team_id, null, 0);
             BrilliantSkies.Core.Types.Vector3d vector3D = new BrilliantSkies.Core.Types.Vector3d(VLoc(gap, count, pos, dis));
             vector3D.y += offset;
-            BlueprintConverter.Initiate(val, vector3D, VDir(), team_id, null, 0);
+            BlueprintConverter.Initiate(val, PlanetList.MainFrame.FramePositionToUniversalPosition((Vector3)vector3D), VDir(), team_id, null, 0);
         }
 
         public Vector3 VLoc(float gap, int count, int pos, float dis)

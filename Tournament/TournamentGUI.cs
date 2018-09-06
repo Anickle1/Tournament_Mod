@@ -6,6 +6,8 @@ using BrilliantSkies.Core.UiSounds;
 using BrilliantSkies.Ui.Tips;
 using System;
 using UnityEngine;
+using BrilliantSkies.Ftd.Planets.World;
+using BrilliantSkies.Core.Timing;
 
 namespace Tournament
 {
@@ -18,6 +20,8 @@ namespace Tournament
         private BrilliantSkies.Ui.TreeSelection.TreeSelectorGuiElement<BlueprintFile, BlueprintFolder> _treeSelector;
 
         public BrilliantSkies.ScriptableObjects.SO_LoadVehicleGUI _Style;
+
+        private int sectionsNorthSouth, sectionsEastWest;
 
         private Tournament t;
 
@@ -39,17 +43,29 @@ namespace Tournament
 		{
 			_Style = LazyLoader.LoadVehicle.Get();
 			BlueprintFolder val = GameFolders.GetCombinedBlueprintFolder();
-			_treeSelector = FtdGuiUtils.GetFileBrowserFor(val);
+            sectionsNorthSouth = WorldSpecification.i.BoardLayout.NorthSouthBoardSectionCount - 1;
+            sectionsEastWest = WorldSpecification.i.BoardLayout.EastWestBoardSectionCount - 1;
+            if(t.eastWestBoard > sectionsEastWest)
+            {
+                t.eastWestBoard = t.eastWestBoardD;
+            }
+            if (t.northSouthBoard > sectionsNorthSouth)
+            {
+                t.northSouthBoard = t.northSouthBoardD;
+            }
+            _treeSelector = FtdGuiUtils.GetFileBrowserFor(val);
 			_treeSelector.Refresh();
             t.ResetCam();
-		}
+            GameEvents.UpdateEvent += t.UpdateBoardSectionPreview;
+        }
 
 		public unsafe override void OnGui()
 		{
             GUILayout.BeginArea(new Rect(0f, 0f, 340f, 580f), "Select Contestants", GUI.skin.window);
             _treeSelector.OnGui(new Rect(30f, 35f, 280f, 520f),(Action<BlueprintFile>)UpdateFileData);
             GUILayout.EndArea();
-			GUILayout.BeginArea(new Rect(340f, 0f, 600f, 580f), "Tournament Settings", GUI.skin.window);
+
+            GUILayout.BeginArea(new Rect(340f, 0f, 600f, 380f), "Tournament Settings", GUI.skin.window);
 			optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
             
 			GUISliders.TotalWidthOfWindow = 580;
@@ -64,74 +80,78 @@ namespace Tournament
 			t.maxdis = GUISliders.DisplaySlider(4, "Max Dis", t.maxdis, 0f, 10000f, 0, new ToolTip("Max distance from nearest enemy before penalty time added"));
 			t.maxoob = GUISliders.DisplaySlider(5, "Penalty Time", t.maxoob, 0f, 10000f, 0, new ToolTip("Max penalty time (seconds)"));
 			t.maxtime = GUISliders.DisplaySlider(6, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
-			//t.maxcost = GUISliders.DisplaySlider(7, "Max Design Cost", t.maxcost, 0f, 1E+07f, 0, new ToolTip("Max design cost, Currently doesn't effect anything"));
 			t.maxmat = GUISliders.DisplaySlider(7, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
-            //t.matconv = GUISliders.DisplaySlider(9, "Dmg to Mat %", t.matconv, -1f, 100f, 0, new ToolTip("Damage to material conversion, -1 disables self/team damage material return"));
-            /*t.srules = Convert.ToBoolean(GUISliders.DisplaySlider(10, ((Tournament.OPTIONS.STANDARDRULES)Convert.ToInt32(t.srules)).ToString(), (float)Convert.ToInt32(t.srules), 0f, 1f, 0, new ToolTip("Standard despawn rules, or customise")));
-			if (!t.srules)
-			{
-				t.penaltynoai = Convert.ToBoolean(GUISliders.DisplaySlider(11, ((Tournament.OPTIONS.AIPENALTY)Convert.ToInt32(t.penaltynoai)).ToString(), (float)Convert.ToInt32(t.penaltynoai), 0f, 1f, 0, new ToolTip("Does having no AI left add to penalty time?")));
-				t.standardhp = Convert.ToBoolean(GUISliders.DisplaySlider(12, ((Tournament.OPTIONS.HPMODE)Convert.ToInt32(t.standardhp)).ToString(), (float)Convert.ToInt32(t.standardhp), 0f, 1f, 0, new ToolTip("Calculate HP by % of alive blocks or % of alive block costs")));
-				t.penaltyhp = GUISliders.DisplaySlider(13, "HP Penalty %", t.penaltyhp, 0f, 100f, 0, new ToolTip("Adds to penalty time when below hp %, 0 disables"));
-			}*/
-            if (GUI.Button(new Rect(50f, 480f, 200f, 50f), "Save Settings"))
-            {
-                GUISoundManager.GetSingleton().PlayBeep();
-                t.saveSettings();
-            }
-
-            if (GUI.Button(new Rect(300f, 480f, 200f, 50f), "Restore Defaults"))
-            {
-                GUISoundManager.GetSingleton().PlayBeep();
-                t.spawndis =  t.spawndisD;
-                t.spawngap = t.spawngapD;
-                t.minalt = t.minaltD;
-                t.maxalt = t.maxaltD;
-                t.maxdis = t.maxdisD;
-                t.maxoob = t.maxoobD;
-                t.maxtime = t.maxtimeD;
-                t.maxmat = t.maxmatD;
-                t.Dir = t.DirD;
-                t.Loc = t.LocD;
-                t.offset = t.offsetD;
-            }
             GUILayout.EndScrollView();
 			GUILayout.EndArea();
-			GUILayout.BeginArea(new Rect(0f, 580f, 940f, 200f), "Spawn Settings", GUI.skin.window);
-			GUISliders.TotalWidthOfWindow = 600;
-			GUISliders.TextWidth = 240;
+
+            GUILayout.BeginArea(new Rect(340f, 380f, 600f, 200f), "Battle Location", GUI.skin.window);
+            optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
+
+            GUISliders.TotalWidthOfWindow = 580;
+            GUISliders.TextWidth = 240;
+            GUISliders.DecimalPlaces = 0;
+            GUISliders.UpperMargin = 25;
+
+            t.eastWestBoard = (int)GUISliders.DisplaySlider(0,"Map Tile East-West", t.eastWestBoard, 0, sectionsEastWest, enumMinMax.none, new ToolTip("The east-west boardindex, it is the first number on the map. 0 is the left side"));
+            t.northSouthBoard = (int)GUISliders.DisplaySlider(1,"Map Tile North-South", t.northSouthBoard, 0, sectionsNorthSouth, enumMinMax.none, new ToolTip("The north-south boardindex, it is the second number on the map. 0 is the bottom side."));
+            t.MoveCam();
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+
+            GUILayout.BeginArea(new Rect(0f, 580f, 600f, 200f), "Spawn Settings", GUI.skin.window);
+			GUISliders.TotalWidthOfWindow = 400;
+			GUISliders.TextWidth = 100;
 			GUISliders.DecimalPlaces = 0;
 			GUISliders.UpperMargin = 40;
 			t.Dir = (Tournament.SPAWN.DIR)checked((int)unchecked(GUISliders.DisplaySlider(0, t.Dir.ToString(), (float)t.Dir, 0f, 3f, 0, new ToolTip("Direction"))));
 			t.Loc = (Tournament.SPAWN.LOC)checked((int)unchecked(GUISliders.DisplaySlider(1, t.Loc.ToString(), (float)t.Loc, 0f, 3f, 0, new ToolTip("Location"))));
             t.offset = GUISliders.DisplaySlider(2, "Height Offset", t.offset, -100f, 100f, 0, new ToolTip("Height Offset from location"));
             if (_treeSelector.CurrentData != null)
-			{
-				if (GUI.Button(new Rect(600f, 25f, 280f, 50f), "Add to Team 1"))
-				{
-					GUISoundManager.GetSingleton().PlayBeep();
-					TournamentEntry tournamentEntry = new TournamentEntry();
-					tournamentEntry.IsKing = true;
-					tournamentEntry.spawn_direction = t.Dir;
-					tournamentEntry.spawn_location = t.Loc;
+            {
+                if (GUI.Button(new Rect(400f, 40f, 150f, 50f), "Add to Team 1"))
+                {
+                    GUISoundManager.GetSingleton().PlayBeep();
+                    TournamentEntry tournamentEntry = new TournamentEntry();
+                    tournamentEntry.IsKing = true;
+                    tournamentEntry.spawn_direction = t.Dir;
+                    tournamentEntry.spawn_location = t.Loc;
                     tournamentEntry.offset = t.offset;
                     tournamentEntry.bpf = _treeSelector.CurrentData;
-					t.entry_t1.Add(tournamentEntry);
-				}
-				if (GUI.Button(new Rect(600f, 100f, 280f, 50f), "Add to Team 2"))
-				{
-					GUISoundManager.GetSingleton().PlayBeep();
-					TournamentEntry tournamentEntry2 = new TournamentEntry();
-					tournamentEntry2.IsKing = false;
-					tournamentEntry2.spawn_direction = t.Dir;
-					tournamentEntry2.spawn_location = t.Loc;
+                    t.entry_t1.Add(tournamentEntry);
+                }
+                if (GUI.Button(new Rect(400f, 100f, 150f, 50f), "Add to Team 2"))
+                {
+                    GUISoundManager.GetSingleton().PlayBeep();
+                    TournamentEntry tournamentEntry2 = new TournamentEntry();
+                    tournamentEntry2.IsKing = false;
+                    tournamentEntry2.spawn_direction = t.Dir;
+                    tournamentEntry2.spawn_location = t.Loc;
                     tournamentEntry2.offset = t.offset;
                     tournamentEntry2.bpf = _treeSelector.CurrentData;
-					t.entry_t2.Add(tournamentEntry2);
-				}
-			}
-			GUILayout.EndArea();
-			GUILayout.BeginArea(new Rect(940f, 0f, 340f, 580f), "Selected", GUI.skin.window);
+                    t.entry_t2.Add(tournamentEntry2);
+                }
+            }
+            GUILayout.EndArea();
+
+            GUILayout.BeginArea(new Rect(600f, 580f, 340f, 200f), "Mod Settings", GUI.skin.window);
+            GUILayout.BeginVertical();
+            //new Rect(80f, 50f, 200f, 50f), 
+            if (GUILayout.Button("Save Settings"))
+            {
+                GUISoundManager.GetSingleton().PlayBeep();
+                t.saveSettings();
+            }
+            //new Rect(140f, 300f, 200f, 50f),
+            if (GUILayout.Button("Restore Defaults"))
+            {
+                GUISoundManager.GetSingleton().PlayBeep();
+                t.loadDefaults();
+            }
+            t.defaultKeysBool = GUILayout.Toggle(t.defaultKeysBool, "Use Default Keybinds");
+            GUILayout.EndVertical();
+            GUILayout.EndArea();
+
+            GUILayout.BeginArea(new Rect(940f, 0f, 340f, 580f), "Selected", GUI.skin.window);
 			listpos = GUILayout.BeginScrollView(listpos, (GUILayoutOption[])new GUILayoutOption[0]);
 			GUILayout.Box("<color=#ffa500ff>~---------T1---------~</color>", (GUILayoutOption[])new GUILayoutOption[0]);
 			if (t.entry_t1.Count != 0)
