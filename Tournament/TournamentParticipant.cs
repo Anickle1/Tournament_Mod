@@ -57,7 +57,14 @@ namespace Tournament
 			set;
 		}
 
-		public bool Disqual
+        public float OoBTimeBuffer
+        {
+            get;
+            set;
+        }
+
+
+        public bool Disqual
 		{
 			get;
 			set;

@@ -711,8 +711,16 @@ namespace Tournament
 							}
 							if (num > maxdis && num < num2)
 							{
-								HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                                HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                                if(HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer > 3)
+                                {
+                                    HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                                } 
 							}
+                            else
+                            {
+                                HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer = 0;
+                            }
 						}
 						HUDLog[(val.GetTeam()).Id][key].Disqual = (HUDLog[(val.GetTeam()).Id][key].OoBTime > maxoob);
 					}
