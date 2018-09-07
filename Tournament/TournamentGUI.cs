@@ -65,7 +65,7 @@ namespace Tournament
             _treeSelector.OnGui(new Rect(30f, 35f, 280f, 520f),(Action<BlueprintFile>)UpdateFileData);
             GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(340f, 0f, 600f, 380f), "Tournament Settings", GUI.skin.window);
+            GUILayout.BeginArea(new Rect(340f, 0f, 600f, 400f), "Tournament Settings", GUI.skin.window);
 			optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
             
 			GUISliders.TotalWidthOfWindow = 580;
@@ -74,17 +74,18 @@ namespace Tournament
 			GUISliders.UpperMargin = 0;
 
             t.spawndis = GUISliders.DisplaySlider(0, "Spawn Distance", t.spawndis, 100f, 5000f, 0, new ToolTip("Spawn distance between teams"));
-			t.spawngap = GUISliders.DisplaySlider(1, "Spawn Gap", t.spawngap, 10f, 500f, 0, new ToolTip("Spawn distance between team members"));
-			t.minalt = GUISliders.DisplaySlider(2, "Min Alt", t.minalt, -500f, t.maxalt, 0, new ToolTip("Add to penalty time when below this"));
-			t.maxalt = GUISliders.DisplaySlider(3, "Max Alt", t.maxalt, t.minalt, 2000f, 0, new ToolTip("Add to penalty time when above this"));
-			t.maxdis = GUISliders.DisplaySlider(4, "Max Dis", t.maxdis, 0f, 10000f, 0, new ToolTip("Max distance from nearest enemy before penalty time added"));
-			t.maxoob = GUISliders.DisplaySlider(5, "Penalty Time", t.maxoob, 0f, 10000f, 0, new ToolTip("Max penalty time (seconds)"));
-			t.maxtime = GUISliders.DisplaySlider(6, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
-			t.maxmat = GUISliders.DisplaySlider(7, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
+			t.spawngap = GUISliders.DisplaySlider(1, "Spawn Gap Horizontal", t.spawngap, 0f, 500f, 0, new ToolTip("Spawn distance between team members left to right"));
+            t.spawngap2 = GUISliders.DisplaySlider(2, "Spawn Gap Forward-Back", t.spawngap2, 0f, 1000f, 0, new ToolTip("Spawn distance between team members front to back"));
+            t.minalt = GUISliders.DisplaySlider(3, "Min Alt", t.minalt, -500f, t.maxalt, 0, new ToolTip("Add to penalty time when below this"));
+			t.maxalt = GUISliders.DisplaySlider(4, "Max Alt", t.maxalt, t.minalt, 2000f, 0, new ToolTip("Add to penalty time when above this"));
+			t.maxdis = GUISliders.DisplaySlider(5, "Max Dis", t.maxdis, 0f, 10000f, 0, new ToolTip("Max distance from nearest enemy before penalty time added"));
+			t.maxoob = GUISliders.DisplaySlider(6, "Penalty Time", t.maxoob, 0f, 10000f, 0, new ToolTip("Max penalty time (seconds)"));
+			t.maxtime = GUISliders.DisplaySlider(7, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
+			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
             GUILayout.EndScrollView();
 			GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(340f, 380f, 600f, 200f), "Battle Location", GUI.skin.window);
+            GUILayout.BeginArea(new Rect(340f, 400f, 600f, 180f), "Battle Location", GUI.skin.window);
             optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
 
             GUISliders.TotalWidthOfWindow = 580;

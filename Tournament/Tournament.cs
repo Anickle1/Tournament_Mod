@@ -98,6 +98,8 @@ namespace Tournament
 
 		public float spawngap;
 
+        public float spawngap2;
+
         public float offset;
 
         public Tournament.SPAWN.DIR Dir;
@@ -130,6 +132,8 @@ namespace Tournament
         public float spawndisD = 1000f;
 
         public float spawngapD = 100f;
+
+        public float spawngap2D = 0f;
 
         public float offsetD = 0f;
 
@@ -189,13 +193,13 @@ namespace Tournament
             t1_res = maxmat;
             foreach (TournamentEntry item in entry_t1)
             {
-                item.Spawn(spawndis, spawngap, entry_t1.Count, entry_t1.IndexOf(item));
+                item.Spawn(spawndis, spawngap, spawngap2, entry_t1.Count, entry_t1.IndexOf(item));
                 item.team_id.FactionInst().ResourceStore.SetResources(maxmat);
             }
             t2_res = maxmat;
             foreach (TournamentEntry item2 in entry_t2)
             {
-                item2.Spawn(spawndis, spawngap, entry_t2.Count, entry_t2.IndexOf(item2));
+                item2.Spawn(spawndis, spawngap, spawngap2, entry_t2.Count, entry_t2.IndexOf(item2));
                 item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
             }
         }
@@ -208,29 +212,12 @@ namespace Tournament
 
 			orbitindex = 0;
             orbittarget = 0;
-            //orbittarget = StaticConstructablesManager.constructables.ToArray()[0].UniqueId;
+
             flycam.transform.position = (new Vector3(-500f, 50f, 0f));
             flycam.transform.rotation = (Quaternion.LookRotation(Vector3.right));
 			cammode = false;
             foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
 			{
-                /*Debug.Log("Startmatch ID: "+constructable.UniqueId);
-                if (constructable.Drone.loadedMothershipC != null)
-                {
-                    Debug.Log("Startmatch mothership ID: " + constructable.Drone.loadedMothershipC.UniqueId);
-                    constructable.GenUniqueID();
-                    Debug.Log("Startmatch gen'd ID: " + constructable.UniqueId);
-                    foreach (MainConstruct mother in from t in StaticConstructablesManager.constructables
-                                                     where t.UniqueId == constructable.Drone.loadedMothershipC.UniqueId
-                                                     select t)
-                    {
-                        Debug.Log("Startmatch adding: " + constructable.UniqueId + " to "+mother.uniqueID);
-                        mother.Drone.myJustLoadedDrones.Clear();
-                        mother.Drone.myJustLoadedDrones.Add(constructable);
-                        mother.Drone.FirstFrameSetup();
-                    }
-                    
-                }*/
                 int id = 0;
                 if (constructable.Drone.loadedMothershipC != null)
                 {
@@ -242,7 +229,6 @@ namespace Tournament
 				{
 					HUDLog.Add((constructable.GetTeam()).Id, new SortedDictionary<string, TournamentParticipant>());
 				}
-                //constructable.GenUniqueID();
                
                 if (!HUDLog[(constructable.GetTeam()).Id].ContainsKey(key))
 				{
@@ -252,7 +238,6 @@ namespace Tournament
                         TeamName = constructable.GetTeam().FactionSpec().AbreviatedName,
                         UniqueId = constructable.UniqueId,
                         MothershipId = id,
-                        //BlueprintName = constructable.GetBlueprintName(),
                         BlueprintName = constructable.GetName(),
                         AICount = constructable.BlockTypeStorage.MainframeStore.Blocks.Count,
 						HP = ((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (constructable.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (constructable.iMainStatus.GetFractionAliveBlocks() * 100f)),
@@ -345,6 +330,7 @@ namespace Tournament
             settingsList.Add((float)defaultKeys);
             settingsList.Add((float)eastWestBoard);
             settingsList.Add((float)northSouthBoard);
+            settingsList.Add(spawngap2);
 
             settingsFile.SaveData(settingsList, Formatting.None);
         }
@@ -371,8 +357,9 @@ namespace Tournament
                 defaultKeys = (int)settingsList[11];
                 eastWestBoard = (int)settingsList[12];
                 northSouthBoard = (int)settingsList[13];
+                spawngap2 = settingsList[14];
 
-                if(defaultKeys == 1)
+                if (defaultKeys == 1)
                 {
                     defaultKeysBool = true;
                 }
@@ -392,6 +379,7 @@ namespace Tournament
         {
             spawndis = spawndisD;
             spawngap = spawngapD;
+            spawngap2 = spawngap2D;
             minalt = minaltD;
             maxalt = maxaltD;
             maxdis = maxdisD;

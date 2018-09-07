@@ -137,7 +137,7 @@ namespace Tournament
 			}
 		}
 
-		public void Spawn(float dis, float gap, int count, int pos)
+		public void Spawn(float dis, float gap, float gap2, int count, int pos)
 		{
             MainConstruct val = BlueprintConverter.Convert(bp, 0, true);
             /*val.Drone.myJustLoadedDrones.Clear();
@@ -148,26 +148,28 @@ namespace Tournament
             }*/
             team_id = (IsKing ? InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id : 
                 InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "CHAL").Id);
-            BrilliantSkies.Core.Types.Vector3d vector3D = new BrilliantSkies.Core.Types.Vector3d(VLoc(gap, count, pos, dis));
-            vector3D.y += offset;
-            BlueprintConverter.Initiate(val, PlanetList.MainFrame.FramePositionToUniversalPosition((Vector3)vector3D), VDir(), team_id, null, 0);
+            //BrilliantSkies.Core.Types.Vector3d vector3D = new BrilliantSkies.Core.Types.Vector3d(VLoc(gap, count, pos, dis));
+            //vector3D.y += offset;
+            BlueprintConverter.Initiate(val, PlanetList.MainFrame.FramePositionToUniversalPosition(VLoc(gap, gap2, count, pos, dis, offset)), VDir(), team_id, null, 0);
         }
 
-        public Vector3 VLoc(float gap, int count, int pos, float dis)
+        public Vector3 VLoc(float gap, float gap2, int count, int pos, float dis, float offset)
 		{
+            float x = (count - 1f) * gap / 2f - pos * gap;
+            float z = IsKing ? (dis / 2f) + (pos*gap2) : (dis / 2f - dis) - (pos*gap2);
 			
 			switch (spawn_location)
 			{
 			case Tournament.SPAWN.LOC.Sea:
-				return new Vector3(((float)count - 1f * gap) / 2f - (float)pos * gap, 1f, IsKing ? (dis / 2f) : (dis / 2f - dis));
+				return new Vector3(x, 1f + offset, z);
 			case Tournament.SPAWN.LOC.Air:
-				return new Vector3(((float)count - 1f * gap) / 2f - (float)pos * gap, 100f, IsKing ? (dis / 2f) : (dis / 2f - dis));
+				return new Vector3(x, 100f + offset, z);
 			case Tournament.SPAWN.LOC.Sub:
-				return new Vector3(((float)count - 1f * gap) / 2f - (float)pos * gap, -20f, IsKing ? (dis / 2f) : (dis / 2f - dis));
+				return new Vector3(x, -20f + offset, z);
 			case Tournament.SPAWN.LOC.Land:
-				return new Vector3(((float)count - 1f * gap) / 2f - (float)pos * gap, 51f, IsKing ? (dis / 2f) : (dis / 2f - dis));
+				return new Vector3(x, 51f + offset, z);
 			default:
-				return new Vector3(((float)count - 1f * gap) / 2f - (float)pos * gap, 0f, (float)(IsKing ? 500 : (-500)));
+				return new Vector3(x, 0f + offset, z);
 			}
 		}
 
