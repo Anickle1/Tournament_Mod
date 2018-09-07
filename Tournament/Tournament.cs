@@ -147,6 +147,9 @@ namespace Tournament
 
         public int defaultKeysD = 1;
 
+        public float oobReverse = 5; // out of bounds and maoving away speed limit before dq time
+
+        public float oobMaxBuffer = 3; //out of bounds and moving away too fast buffer time in secs
 
         private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
 
@@ -709,10 +712,10 @@ namespace Tournament
                                     }
 								}
 							}
-							if (num > maxdis && num < num2)
+							if (num > maxdis && num < num2-oobReverse) //out of bounds and moving away faster than  oobReverse m/s
 							{
                                 HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
-                                if(HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer > 3)
+                                if(HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer > oobMaxBuffer)
                                 {
                                     HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
                                 } 
