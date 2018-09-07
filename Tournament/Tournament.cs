@@ -114,6 +114,10 @@ namespace Tournament
 
         public bool defaultKeysBool;
 
+        public float oobReverse; // out of bounds and maoving away speed limit before dq time
+
+        public float oobMaxBuffer; //out of bounds and moving away too fast buffer time in secs
+
         //Defaults
         public float minaltD = -50f;
 
@@ -147,9 +151,9 @@ namespace Tournament
 
         public int defaultKeysD = 1;
 
-        public float oobReverse = 5; // out of bounds and maoving away speed limit before dq time
+        public float oobReverseD = 0; // out of bounds and maoving away speed limit before dq time. 0 will add dq time if move away at all, positve increases away speed limit, negative you need to move towards at at least this speed or pick up dq
 
-        public float oobMaxBuffer = 3; //out of bounds and moving away too fast buffer time in secs
+        public float oobMaxBufferD = 3; //out of bounds and moving away too fast buffer time in secs
 
         private SortedDictionary<int, SortedDictionary<string, TournamentParticipant>> HUDLog = new SortedDictionary<int, SortedDictionary<string, TournamentParticipant>>();
 
@@ -334,6 +338,8 @@ namespace Tournament
             settingsList.Add((float)eastWestBoard);
             settingsList.Add((float)northSouthBoard);
             settingsList.Add(spawngap2);
+            settingsList.Add(oobMaxBuffer);
+            settingsList.Add(oobReverse);
 
             settingsFile.SaveData(settingsList, Formatting.None);
         }
@@ -361,6 +367,8 @@ namespace Tournament
                 eastWestBoard = (int)settingsList[12];
                 northSouthBoard = (int)settingsList[13];
                 spawngap2 = settingsList[14];
+                oobMaxBuffer = settingsList[15];
+                oobReverse = settingsList[16];
 
                 if (defaultKeys == 1)
                 {
@@ -395,6 +403,8 @@ namespace Tournament
             defaultKeys = defaultKeysD;
             eastWestBoard = eastWestBoardD;
             northSouthBoard = northSouthBoardD;
+            oobMaxBuffer = oobMaxBufferD;
+            oobReverse = oobReverseD;
             if (defaultKeys == 1)
             {
                 defaultKeysBool = true;
