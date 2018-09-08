@@ -1,0 +1,34 @@
+This version of the tournament mod is based on the wootness mod that stopped working after 2.2.x
+It has been fixed and updated by Anickle and Qwert26.
+
+Changes to the mod for versions 2.2.x :
+
+[V2.2.21]
+Fixes:
+
+Resources being given to team 2 incorrectly has been fixed.
+Camera will no longer jump to another craft when in orbit mode when a different craft dies.
+Docking ports now function and will correctly tractor subvehicles.
+Inbattle UI now correctly displays name and health of subvehicles.
+
+
+Major Additions:
+
+Map grid selection - you can now select a battle location on the current world map by grid using sliders in the UI. 
+Rebindable keys - the mod has the option to use either the games rebindable keys or mod default keys. Checkbox in UI for selecting between these option.
+Saving settings - you can now save your tournament config using a button in the UI, saved settings will automatically load with the mod on game launch. defaults can be restored via another button.
+
+
+Minor additions and Adjustments:
+
+Spawn height can now be offset by up to 100 metres higher or lower via a UI slider.
+Orbit camera now orbits the centre of mass of each vehicle instead of either the first block or origin block.
+Multiple craft being spawned with a horizontal gap will spread evenly either side of the enemies centre instead of all to the left.
+You can now space vehicles with a front to back gap using a UI slider. Use to create convoy lines or in combination with horizontal gap for staggered diagonal lines.
+Out of bounds due to distance now has a buffer time before DQ time begins to be added - this allows ships to briefly move backwards due to recoil with being punished. Default 3 second buffer.
+Out of bounds due to distance has an option to set a speed limit, this is off by default. Check setting readme for more details.
+
+
+Known Issues: 
+
+Changing location takes a few seconds to load, launching a battle too quickly can result in terrain loading after battle has begun or the battle jumping back to the default location. Allow a few seconds for the map to load before starting a battle.

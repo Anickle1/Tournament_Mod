@@ -540,117 +540,113 @@ namespace Tournament
 					orbitcam.distance = ((orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") > 0f) ? (orbitcam.distance - Input.GetAxis("Mouse ScrollWheel") * 50f) : 0f);
 				}
 			}
-            if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0)
-            {      
-                int index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget);
-                if(index >= 0) { orbitindex = index; }
-                else { orbitindex = 0; }
-            }
-			checked
-			{
-				if (next)
-				{
-					Debug.Log(unchecked((object)(StaticConstructablesManager.constructables.Count + " " + orbitindex)));
-					if (orbitindex + 1 >= StaticConstructablesManager.constructables.Count)
-					{
-						orbitindex = 0;
-						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
-					}
-					else
-					{
-						orbitindex++;
-						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
-					}
-				}
-				if (previous)
-				{
-					if (orbitindex == 0)
-					{
-						orbitindex = StaticConstructablesManager.constructables.Count - 1;
-						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
-					}
-					else
-					{
-						orbitindex--;
-						orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
-					}
-				}
+            if (StaticConstructablesManager.constructables.Count > 0)
+            {
+                if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0)
+                {
+                    int index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget);
+                    if (index >= 0) { orbitindex = index; }
+                    else { orbitindex = 0; }
+                }
+                if (next)
+                {
+                    if (orbitindex + 1 >= StaticConstructablesManager.constructables.Count)
+                    {
+                        orbitindex = 0;
+                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                    }
+                    else
+                    {
+                        orbitindex++;
+                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                    }
+                }
+                if (previous)
+                {
+                    if (orbitindex == 0)
+                    {
+                        orbitindex = StaticConstructablesManager.constructables.Count - 1;
+                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                    }
+                    else
+                    {
+                        orbitindex--;
+                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                    }
+                }
 
                 if (orbittarget != StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId)
                 {
                     orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
                 }
-
-                if (orbitcamOn && StaticConstructablesManager.constructables.Count != 0)
-				{
-					flycam.enabled = false;
-					orbitcam.enabled = true;
-				}
-				else if (freecamOn)
-				{
-					orbitcam.enabled = false;
-					flycam.enabled = true;
-					flycam.transform.rotation = orbitcam.transform.rotation;
-				}
-				if (flycam.enabled && defaultKeysBool)
-				{
-                    //Vector3 val = new Vector3(Input.GetAxisRaw("Sidestep"), Input.GetKey((KeyCode)32) ? 1f : ((Input.GetKey((KeyCode)308) | Input.GetKey((KeyCode)307)) ? (-1f) : 0f), Input.GetAxisRaw("ForwardsBackwards"));
-                    float x = 0;
-                    float y = 0;
-                    float z = 0;
-                    if(Input.GetKey((KeyCode)32)) //space  = up
-                    {
-                        y += 1;
-                    }
-                    if(Input.GetKey((KeyCode)308) | Input.GetKey((KeyCode)307)) // alt = down
-                    {
-                        y -= 1;
-                    }
-                    if (Input.GetKey((KeyCode)97)) // a = left
-                    {
-                        x -= 1;
-                    }
-                    if (Input.GetKey((KeyCode)100)) // d= right
-                    {
-                        x += 1;
-                    }
-                    if (Input.GetKey((KeyCode)119)) // w = forward
-                    {
-                        z += 1;
-                    }
-                    if (Input.GetKey((KeyCode)115)) // s = back
-                    {
-                        z -= 1;
-                    }
-                    Vector3 val = new Vector3(x, y, z);
-                    if (shift)
-					{
-						val = Vector3.Scale(val, new Vector3(5f, 5f, 5f)); // increase vector with shift
-                    }
-                    flycam.transform.position = flycam.transform.position + flycam.transform.localRotation * val;
-                }
-                if (flycam.enabled && !defaultKeysBool)
-                {
-                    Vector3 movement = ftdKeyMap.GetMovemementDirection() * (shift ? 5 : 1);
-                    flycam.transform.position += flycam.transform.localRotation * movement;
-                }
-                else if (orbitcam.enabled)
-                {
-                    if (StaticConstructablesManager.constructables.Count == 0)
-                    {
-                        flycam.enabled = true;
-                        orbitcam.enabled = false;
-                    }
-                    else
-                    {
-                        Vector3d position = PlanetList.MainFrame.FramePositionToUniversalPosition(StaticConstructablesManager.constructables.ToArray()[orbitindex].CentreOfMass);
-                        Quaternion rotation = StaticConstructablesManager.constructables.ToArray()[orbitindex].SafeRotation;
-                        orbitcam.OrbitTarget = new PositionAndRotationReturnUniverseCoord(new UniversalTransform(position, rotation));
-                    }
-                }
-                
-                
+            }
+            if (orbitcamOn && StaticConstructablesManager.constructables.Count != 0)
+			{
+				flycam.enabled = false;
+				orbitcam.enabled = true;
 			}
+			else if (freecamOn)
+			{
+				orbitcam.enabled = false;
+				flycam.enabled = true;
+				flycam.transform.rotation = orbitcam.transform.rotation;
+			}
+			if (flycam.enabled && defaultKeysBool)
+			{
+                //Vector3 val = new Vector3(Input.GetAxisRaw("Sidestep"), Input.GetKey((KeyCode)32) ? 1f : ((Input.GetKey((KeyCode)308) | Input.GetKey((KeyCode)307)) ? (-1f) : 0f), Input.GetAxisRaw("ForwardsBackwards"));
+                float x = 0;
+                float y = 0;
+                float z = 0;
+                if(Input.GetKey((KeyCode)32)) //space  = up
+                {
+                    y += 1;
+                }
+                if(Input.GetKey((KeyCode)308) | Input.GetKey((KeyCode)307)) // alt = down
+                {
+                    y -= 1;
+                }
+                if (Input.GetKey((KeyCode)97)) // a = left
+                {
+                    x -= 1;
+                }
+                if (Input.GetKey((KeyCode)100)) // d= right
+                {
+                    x += 1;
+                }
+                if (Input.GetKey((KeyCode)119)) // w = forward
+                {
+                    z += 1;
+                }
+                if (Input.GetKey((KeyCode)115)) // s = back
+                {
+                    z -= 1;
+                }
+                Vector3 val = new Vector3(x, y, z);
+                if (shift)
+				{
+					val = Vector3.Scale(val, new Vector3(5f, 5f, 5f)); // increase vector with shift
+                }
+                flycam.transform.position = flycam.transform.position + flycam.transform.localRotation * val;
+            }
+            if (flycam.enabled && !defaultKeysBool)
+            {
+                Vector3 movement = ftdKeyMap.GetMovemementDirection() * (shift ? 5 : 1);
+                flycam.transform.position += flycam.transform.localRotation * movement;
+            }
+            else if (orbitcam.enabled)
+            {
+                if (StaticConstructablesManager.constructables.Count == 0)
+                {
+                    flycam.enabled = true;
+                    orbitcam.enabled = false;
+                }
+                else
+                {
+                    Vector3d position = PlanetList.MainFrame.FramePositionToUniversalPosition(StaticConstructablesManager.constructables.ToArray()[orbitindex].CentreOfMass);
+                    Quaternion rotation = StaticConstructablesManager.constructables.ToArray()[orbitindex].SafeRotation;
+                    orbitcam.OrbitTarget = new PositionAndRotationReturnUniverseCoord(new UniversalTransform(position, rotation));
+                }
+            }
 		}
 
 		public unsafe void FixedUpdate(ITimeStep dt)
@@ -823,7 +819,7 @@ namespace Tournament
 								return uniqueId2 == keyValuePair8.Key;
 							}
 							return false;
-						}).iMain.CentreOfMass;
+						}).CentreOfMass;
 						GameObject.Instantiate<GameObject>(Resources.Load("Detonator-MushroomCloud") as GameObject, centreOfMass, Quaternion.identity);
 						StaticConstructablesManager.constructables.Find(delegate(MainConstruct c)
 						{
