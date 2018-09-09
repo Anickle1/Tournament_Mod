@@ -701,20 +701,20 @@ namespace Tournament
 							{
 								if (val != val2 && val.GetTeam() != val2.GetTeam())
 								{
-									float num3 = Vector3.Distance(val.CentreOfMass, val2.CentreOfMass);
+									float num3 = Vector3.Distance(val.FastPosition, val2.FastPosition);
 									if (num < 0f)
 									{
 										num = num3;
                                         //heading towards
                                         //num2 = Vector3.Distance(val.CentreOfMass + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.CentreOfMass;
-                                        num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
+                                        num2 = Vector3.Distance(val.FastPosition + val.Velocity, val2.FastPosition);
                                             
                                     }
-									else if (Vector3.Distance(val.CentreOfMass, val2.CentreOfMass) < num)
+									else if (Vector3.Distance(val.FastPosition, val2.FastPosition) < num)
 									{
 										num = num3;
 										//num2 = Vector3.Distance(val.get_CentreOfMass() + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.get_CentreOfMass());
-                                        num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
+                                        num2 = Vector3.Distance(val.FastPosition + val.Velocity, val2.FastPosition);
                                     }
 								}
 							}
