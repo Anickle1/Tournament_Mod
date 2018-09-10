@@ -288,8 +288,9 @@ namespace Tournament
             orbitcam.OperateRegardlessOfUiOptions = true;
 			orbitcam.distance = 100f;
 			orbitcam.enabled = false;
-			orbittarget = StaticConstructablesManager.constructables[0].UniqueId;
-			orbitindex = 0;
+            //orbittarget = StaticConstructablesManager.constructables[0].UniqueId;
+            orbittarget = 0;
+            orbitindex = 0;
 			cammode = false;
             
 		}
