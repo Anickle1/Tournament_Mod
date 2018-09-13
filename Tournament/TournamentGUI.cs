@@ -106,7 +106,7 @@ namespace Tournament
 			GUISliders.UpperMargin = 40;
 			t.Dir = (Tournament.SPAWN.DIR)checked((int)unchecked(GUISliders.DisplaySlider(0, t.Dir.ToString(), (float)t.Dir, 0f, 3f, 0, new ToolTip("Direction"))));
 			t.Loc = (Tournament.SPAWN.LOC)checked((int)unchecked(GUISliders.DisplaySlider(1, t.Loc.ToString(), (float)t.Loc, 0f, 3f, 0, new ToolTip("Location"))));
-            t.offset = GUISliders.DisplaySlider(2, "Height Offset", t.offset, -100f, 100f, 0, new ToolTip("Height Offset from location"));
+            t.offset = GUISliders.DisplaySlider(2, "Height Offset", t.offset, -100f, 400f, 0, new ToolTip("Height Offset from location"));
             if (_treeSelector.CurrentData != null)
             {
                 if (GUI.Button(new Rect(400f, 40f, 150f, 50f), "Add to Team 1"))
