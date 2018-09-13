@@ -70,9 +70,11 @@ namespace Tournament
 
 		public int orbittarget;
 
-		public int orbitindex;
+        public int orbitMothership;
 
-		public bool cammode;
+        public int orbitindex;
+
+        public bool cammode;
 
 		private float timerTotal;
 
@@ -291,6 +293,7 @@ namespace Tournament
             //orbittarget = StaticConstructablesManager.constructables[0].UniqueId;
             orbittarget = 0;
             orbitindex = 0;
+            orbitMothership = -1;
 			cammode = false;
             
 		}
@@ -543,9 +546,18 @@ namespace Tournament
 			}
             if (StaticConstructablesManager.constructables.Count > 0)
             {
-                if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0)
+                if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0 ||
+                    (orbitMothership != -1 && StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC.uniqueID != orbitMothership))
                 {
-                    int index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget);
+                    int index;
+                    if (orbitMothership == -1)
+                    {
+                        index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget);
+                    }
+                    else
+                    {
+                        index = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == orbittarget && m.Drone.loadedMothershipC.uniqueID == orbitMothership);
+                    }
                     if (index >= 0) { orbitindex = index; }
                     else { orbitindex = 0; }
                 }
@@ -554,12 +566,12 @@ namespace Tournament
                     if (orbitindex + 1 >= StaticConstructablesManager.constructables.Count)
                     {
                         orbitindex = 0;
-                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                        //orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
                     }
                     else
                     {
                         orbitindex++;
-                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                        //orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
                     }
                 }
                 if (previous)
@@ -567,18 +579,28 @@ namespace Tournament
                     if (orbitindex == 0)
                     {
                         orbitindex = StaticConstructablesManager.constructables.Count - 1;
-                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                        //orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
                     }
                     else
                     {
                         orbitindex--;
-                        orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                        //orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
                     }
                 }
 
-                if (orbittarget != StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId)
+                if (orbittarget != StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId ||
+                    (StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC != null &&
+                     orbitMothership != StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC.uniqueID))
                 {
                     orbittarget = StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId;
+                    if (StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC != null)
+                    {
+                        orbitMothership = StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC.uniqueID;
+                    }
+                    else
+                    { 
+                        orbitMothership = -1;
+                    }
                 }
             }
             if (orbitcamOn && StaticConstructablesManager.constructables.Count != 0)
