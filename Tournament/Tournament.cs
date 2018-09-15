@@ -6,14 +6,12 @@ using BrilliantSkies.Ftd.Planets.Factions;
 using BrilliantSkies.Core.Timing;
 using BrilliantSkies.Ftd.Avatar;
 using BrilliantSkies.Core.Id;
-using BrilliantSkies.Ftd.Avatar.Movement;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using BrilliantSkies.Core.Returns.PositionAndRotation;
 using BrilliantSkies.PlayerProfiles;
-using BrilliantSkies.Ui.Displayer;
 using BrilliantSkies.Core.UniverseRepresentation.Positioning.Frames.Points;
 using BrilliantSkies.Core.Types;
 using BrilliantSkies.Core.Constants;
@@ -22,6 +20,8 @@ using Newtonsoft.Json;
 using BrilliantSkies.Core.UniverseRepresentation;
 using BrilliantSkies.Ftd.Planets;
 using BrilliantSkies.Ftd.Planets.World;
+using BrilliantSkies.GridCasts;
+using BrilliantSkies.Ftd.Planets.Instances.Factions;
 
 namespace Tournament
 {
@@ -75,6 +75,8 @@ namespace Tournament
         public int orbitindex;
 
         public bool cammode;
+
+        public bool extraInfo;
 
 		private float timerTotal;
 
@@ -294,6 +296,7 @@ namespace Tournament
             orbittarget = 0;
             orbitindex = 0;
             orbitMothership = -1;
+            extraInfo = false;
 			cammode = false;
             
 		}
@@ -480,7 +483,62 @@ namespace Tournament
 					}
 				}
 			}
+            // extra info panel
+            if (extraInfo)
+            {
+                int target = getTarget();
+                if (target != -1)
+                {
+                    int targetIndex = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == target);
+
+                    GUI.Label(new Rect(200f, 0f, 60f, 38f), "Name:", _Left);
+                    GUI.Label(new Rect(200f, 38f, 60f, 38f), "Team:", _Left);
+                    GUI.Label(new Rect(200f, 76f, 60f, 38f), "HP:", _Left);
+                    GUI.Label(new Rect(200f, 114f, 60f, 38f), "Ammo:", _Left);
+                    GUI.Label(new Rect(200f, 152f, 60f, 38f), "Fuel:", _Left);
+                    GUI.Label(new Rect(200f, 190f, 60f, 38f), "Battery:", _Left);
+                    GUI.Label(new Rect(200f, 228f, 60f, 38f), "Power:", _Left);
+
+                    string name = StaticConstructablesManager.constructables[targetIndex].blueprintName;
+                    int kingId = InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id.Id;
+                    string team = StaticConstructablesManager.constructables[targetIndex].GetTeam().Id == kingId ? "1" : "2";
+                    string hp = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f,1).ToString()}%";
+                    string ammo = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].Ammo.Ammo.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].Ammo.Ammo.Maximum,0)}";
+                    string fuel = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Fuel.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Fuel.Maximum,0)}";
+                    string battery = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Energy.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Energy.Maximum,0)}";
+                    string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower - StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)}" +
+                        $"/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower,0)}";
+
+                    GUI.Label(new Rect(260f, 0f, 140f, 38f), name, _Right);
+                    GUI.Label(new Rect(260f, 38f, 140f, 38f), team, _Right);
+                    GUI.Label(new Rect(260f, 76f, 140f, 38f), hp, _Right);
+                    GUI.Label(new Rect(260f, 114f, 140f, 38f), ammo, _Right);
+                    GUI.Label(new Rect(260f, 152f, 140f, 38f), fuel, _Right);
+                    GUI.Label(new Rect(260f, 190f, 140f, 38f), battery, _Right);
+                    GUI.Label(new Rect(260f, 228f, 140f, 38f), power, _Right);
+
+                }
+            }
 		}
+
+        public int getTarget()
+        {
+            int index = -1;
+            Transform myTransform = flycam.enabled ? flycam.transform : orbitcam.transform;
+            GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 300.0f, 10, true));
+            if (gridCastReturn.HitSomething)
+            {
+                if (gridCastReturn.FirstHit.BlockHit.IsOnSubConstructable)
+                {
+                    index = gridCastReturn.FirstHit.BlockHit.ParentConstruct.iMain.UniqueId;
+                }
+                else
+                {
+                    index = gridCastReturn.FirstHit.BlockHit.MainConstruct.UniqueId;
+                }
+            }
+            return index;
+        }
 
         public void UpdateBoardSectionPreview(ITimeStep dt)
         {
@@ -497,6 +555,7 @@ namespace Tournament
             bool shift = false;
             bool freecamOn = false;
             bool orbitcamOn = false;
+            bool changeExtraInfo = false;
 
             switch (defaultKeysBool)
             {
@@ -505,6 +564,7 @@ namespace Tournament
                     shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
                     next = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.InventoryUi).Key);
                     previous = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.Interact).Key);
+                    changeExtraInfo = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.CharacterSheetUi).Key);
                     freecamOn = Input.GetMouseButtonUp(1); // technically same as default atm
                     orbitcamOn = Input.GetMouseButtonUp(0); // technically same as default atm
                     break;
@@ -513,6 +573,7 @@ namespace Tournament
                     shift = Input.GetKey((KeyCode)303) || Input.GetKey((KeyCode)304);
                     next = Input.GetKeyUp((KeyCode)101); // default e
                     previous = Input.GetKeyUp((KeyCode)113); // default q
+                    changeExtraInfo = Input.GetKeyUp((KeyCode)122); // default z
                     freecamOn = Input.GetKeyUp((KeyCode)324); // default left click
                     orbitcamOn = Input.GetKeyUp((KeyCode)323); // default right click
                     break;
@@ -532,6 +593,10 @@ namespace Tournament
             {
                 orbitcam.xSpeed = 250;
                 orbitcam.ySpeed = 120;
+            }
+            if (changeExtraInfo)
+            {
+                extraInfo =  (extraInfo == true) ? false : true;
             }
 			if (Input.GetAxis("Mouse ScrollWheel") != 0f)
 			{
