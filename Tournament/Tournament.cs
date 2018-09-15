@@ -58,7 +58,9 @@ namespace Tournament
 
 		public GUIStyle _Right;
 
-		public bool started;
+        public GUIStyle _RightWrap;
+
+        public bool started;
 
 		public GameObject cam;
 
@@ -192,6 +194,13 @@ namespace Tournament
 			_Right.fontSize = 12;
 			_Right.wordWrap = false;
 			_Right.clipping = (TextClipping)1;
+
+            _RightWrap = new GUIStyle(LazyLoader.HUD.Get().interactionStyle);
+            _RightWrap.alignment = (TextAnchor)2;
+            _RightWrap.richText = true;
+            _RightWrap.fontSize = 12;
+            _RightWrap.wordWrap = true;
+            _RightWrap.clipping = (TextClipping)1;
 
             loadSettings();
 		}
@@ -490,32 +499,71 @@ namespace Tournament
                 if (target != -1)
                 {
                     int targetIndex = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == target);
+                    MainConstruct targetConstruct = StaticConstructablesManager.constructables[targetIndex];
 
-                    GUI.Label(new Rect(200f, 0f, 60f, 38f), "Name:", _Left);
-                    GUI.Label(new Rect(200f, 38f, 60f, 38f), "Team:", _Left);
-                    GUI.Label(new Rect(200f, 76f, 60f, 38f), "HP:", _Left);
-                    GUI.Label(new Rect(200f, 114f, 60f, 38f), "Ammo:", _Left);
-                    GUI.Label(new Rect(200f, 152f, 60f, 38f), "Fuel:", _Left);
-                    GUI.Label(new Rect(200f, 190f, 60f, 38f), "Battery:", _Left);
-                    GUI.Label(new Rect(200f, 228f, 60f, 38f), "Power:", _Left);
+                    string name = targetConstruct.blueprintName;
+                    string hp = $"{Math.Round(targetConstruct.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
+                    string ammo = $"{Math.Round(targetConstruct.Ammo.Ammo.Quantity, 0)}/{Math.Round(targetConstruct.Ammo.Ammo.Maximum, 0)}";
+                    string fuel = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Quantity, 0)}/{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Maximum, 0)}";
+                    string battery = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Energy.Quantity, 0)}/{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Energy.Maximum, 0)}";
+                    //power as current output / max
+                    //string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower - StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)}" +
+                    //    $"/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower, 0)}";
+                    // power as available /max#
+                    string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)} / {Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower, 0)}";
+                    string altitude = Math.Round(StaticConstructablesManager.constructables[targetIndex].CentreOfMass.y, 0).ToString();
 
-                    string name = StaticConstructablesManager.constructables[targetIndex].blueprintName;
+                    float closest = -1f;
+                    foreach (MainConstruct construct in StaticConstructablesManager.constructables.ToArray())
+                    {  
+                        if (construct.GetTeam() != targetConstruct.GetTeam())
+                        {
+                            float distance = Vector3.Distance(construct.CentreOfMass, targetConstruct.CentreOfMass);
+                            if (closest < 0f || distance < closest)
+                            {
+                                closest = distance;
+                            }
+                        }
+                    }
+                    string nearest = Math.Round(closest,0).ToString();
+
+
+                    float xOffsetLabel;
+                    float xOffsetValue;
+
                     int kingId = InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id.Id;
-                    string team = StaticConstructablesManager.constructables[targetIndex].GetTeam().Id == kingId ? "1" : "2";
-                    string hp = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f,1).ToString()}%";
-                    string ammo = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].Ammo.Ammo.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].Ammo.Ammo.Maximum,0)}";
-                    string fuel = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Fuel.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Fuel.Maximum,0)}";
-                    string battery = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Energy.Quantity,0)}/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Energy.Maximum,0)}";
-                    string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower - StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)}" +
-                        $"/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower,0)}";
+                    if(StaticConstructablesManager.constructables[targetIndex].GetTeam().Id == kingId) // team 1
+                    {
+                        xOffsetLabel = 200;
+                        xOffsetValue = 290;
+                    }
+                    else
+                    {
+                        xOffsetLabel = 880;
+                        xOffsetValue = 970;
+                    }
+              
+                    GUI.Label(new Rect(xOffsetLabel, 0f, 90f, 38f), "Name:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 38f, 90f, 38f), "HP:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 76f, 90f, 38f), "Ammo:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 114f, 90f, 38f), "Fuel:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 152f, 90f, 38f), "Battery:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 190f, 90f, 38f), "Power:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 228f, 90f, 38f), "Altitude:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 266f, 90f, 38f), "Nearest Enemy:", _Left);
 
-                    GUI.Label(new Rect(260f, 0f, 140f, 38f), name, _Right);
-                    GUI.Label(new Rect(260f, 38f, 140f, 38f), team, _Right);
-                    GUI.Label(new Rect(260f, 76f, 140f, 38f), hp, _Right);
-                    GUI.Label(new Rect(260f, 114f, 140f, 38f), ammo, _Right);
-                    GUI.Label(new Rect(260f, 152f, 140f, 38f), fuel, _Right);
-                    GUI.Label(new Rect(260f, 190f, 140f, 38f), battery, _Right);
-                    GUI.Label(new Rect(260f, 228f, 140f, 38f), power, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 0f, 110f, 38f), name, _RightWrap);
+                    GUI.Label(new Rect(xOffsetValue, 38f, 110f, 38f), hp, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 76f, 110f, 38f), ammo, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 114f, 110f, 38f), fuel, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 152f, 110f, 38f), battery, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 190f, 110f, 38f), power, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 228f, 110f, 38f), altitude, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 266f, 110f, 38f), nearest, _Right);
+
+
+
+
 
                 }
             }
@@ -525,7 +573,7 @@ namespace Tournament
         {
             int index = -1;
             Transform myTransform = flycam.enabled ? flycam.transform : orbitcam.transform;
-            GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 300.0f, 10, true));
+            GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 500.0f, 10, true));
             if (gridCastReturn.HitSomething)
             {
                 if (gridCastReturn.FirstHit.BlockHit.IsOnSubConstructable)
