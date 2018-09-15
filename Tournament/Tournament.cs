@@ -546,6 +546,10 @@ namespace Tournament
 			}
             if (StaticConstructablesManager.constructables.Count > 0)
             {
+                if (orbitindex >= StaticConstructablesManager.constructables.Count)
+                {
+                    orbitindex = 0;
+                }
                 if (StaticConstructablesManager.constructables.ToArray()[orbitindex].UniqueId != orbittarget && orbittarget != 0 ||
                     (orbitMothership != -1 && StaticConstructablesManager.constructables.ToArray()[orbitindex].Drone.loadedMothershipC.uniqueID != orbitMothership))
                 {
