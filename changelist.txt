@@ -3,6 +3,11 @@ It has been fixed and updated by Anickle and Qwert26.
 
 Changes to the mod for versions 2.2.x :
 
+[v2.2.23]
+Major Additions:
+
+Extra info panel - In match Ui panel with extra info about the craft the camera is looking at - toggled by z by default.
+
 [V2.2.21]
 Fixes:
 
@@ -21,7 +26,7 @@ Saving settings - you can now save your tournament config using a button in the 
 
 Minor additions and Adjustments:
 
-Spawn height can now be offset by up to 100 metres higher or lower via a UI slider.
+Spawn height can now be offset by up to 400 metres higher or 100 lower via a UI slider.
 Orbit camera now orbits the centre of mass of each vehicle instead of either the first block or origin block.
 Multiple craft being spawned with a horizontal gap will spread evenly either side of the enemies centre instead of all to the left.
 You can now space vehicles with a front to back gap using a UI slider. Use to create convoy lines or in combination with horizontal gap for staggered diagonal lines.

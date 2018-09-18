@@ -495,11 +495,13 @@ namespace Tournament
             // extra info panel
             if (extraInfo)
             {
-                int target = getTarget();
-                if (target != -1)
+                //int target = getTarget();
+                IMainConstructBlock target = getTarget();
+                if (target != null)
                 {
-                    int targetIndex = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == target);
-                    MainConstruct targetConstruct = StaticConstructablesManager.constructables[targetIndex];
+                    //int targetIndex = StaticConstructablesManager.constructables.FindIndex(0, m => m.UniqueId == target);
+                    MainConstruct targetConstruct = StaticConstructablesManager.constructables.Where(x => x.iMain == target).First();
+                    //MainConstruct targetConstruct = StaticConstructablesManager.constructables[targetIndex];
 
                     string name = targetConstruct.blueprintName;
                     string hp = $"{Math.Round(targetConstruct.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
@@ -510,8 +512,8 @@ namespace Tournament
                     //string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower - StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)}" +
                     //    $"/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower, 0)}";
                     // power as available /max#
-                    string power = $"{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.Power, 0)} / {Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower, 0)}";
-                    string altitude = Math.Round(StaticConstructablesManager.constructables[targetIndex].CentreOfMass.y, 0).ToString();
+                    string power = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Power, 0)} / {Math.Round(targetConstruct.PowerUsageCreationAndFuel.MaxPower, 0)}";
+                    string altitude = Math.Round(targetConstruct.CentreOfMass.y, 0).ToString();
 
                     float closest = -1f;
                     foreach (MainConstruct construct in StaticConstructablesManager.constructables.ToArray())
@@ -532,7 +534,7 @@ namespace Tournament
                     float xOffsetValue;
 
                     int kingId = InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "KING").Id.Id;
-                    if(StaticConstructablesManager.constructables[targetIndex].GetTeam().Id == kingId) // team 1
+                    if(targetConstruct.GetTeam().Id == kingId) // team 1
                     {
                         xOffsetLabel = 200;
                         xOffsetValue = 290;
@@ -569,9 +571,10 @@ namespace Tournament
             }
 		}
 
-        public int getTarget()
+        /*public int getTarget()
         {
             int index = -1;
+
             Transform myTransform = flycam.enabled ? flycam.transform : orbitcam.transform;
             GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 500.0f, 10, true));
             if (gridCastReturn.HitSomething)
@@ -586,6 +589,25 @@ namespace Tournament
                 }
             }
             return index;
+        }*/
+        public IMainConstructBlock getTarget()
+        {
+            IMainConstructBlock target = null;
+
+            Transform myTransform = flycam.enabled ? flycam.transform : orbitcam.transform;
+            GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 500.0f, 10, true));
+            if (gridCastReturn.HitSomething)
+            {
+                if (gridCastReturn.FirstHit.BlockHit.IsOnSubConstructable)
+                {
+                    target = gridCastReturn.FirstHit.BlockHit.ParentConstruct.iMain;
+                }
+                else
+                {
+                    target = gridCastReturn.FirstHit.BlockHit.MainConstruct;
+                }
+            }
+            return target;
         }
 
         public void UpdateBoardSectionPreview(ITimeStep dt)
