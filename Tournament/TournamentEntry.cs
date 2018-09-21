@@ -1,22 +1,12 @@
 using Assets.Scripts;
 using Assets.Scripts.Persistence;
-using BrilliantSkies.FromTheDepths.Planets;
 using BrilliantSkies.Core.Id;
 using BrilliantSkies.Ftd.Planets.Instances;
-using BrilliantSkies.Ftd.Planets.Instances.Headers;
 using BrilliantSkies.Ftd.Planets.Instances.Factions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using BrilliantSkies.Modding.Containers;
-using BrilliantSkies.Modding;
-using BrilliantSkies.Modding.Types;
-using BrilliantSkies.Core.Help;
 using BrilliantSkies.Core.UniverseRepresentation;
-using BrilliantSkies.Core.Types;
-using BrilliantSkies.Core.Modding;
-using BrilliantSkies.Core;
-
 namespace Tournament
 {
 	public class TournamentEntry

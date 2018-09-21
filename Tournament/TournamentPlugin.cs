@@ -1,10 +1,9 @@
-using BrilliantSkies.FromTheDepths.Game;
 using BrilliantSkies.Ftd.Planets;
 using BrilliantSkies.Ftd.Planets.Instances;
 using BrilliantSkies.Ftd.Planets.Factions;
 using BrilliantSkies.Ftd.Planets.Instances.Headers;
 using BrilliantSkies.Core.Timing;
-using BrilliantSkies.Core.Modding;
+using BrilliantSkies.Modding;
 using System;
 using UnityEngine;
 
