@@ -226,6 +226,7 @@ namespace Tournament
 
 		public unsafe void StartMatch()
 		{
+            overtime = false;
 			timerTotal = 0f;
 			timerTotal2 = Time.timeSinceLevelLoad;
 			InstanceSpecification.i.Header.CommonSettings.ConstructableCleanUp = (ConstructableCleanUp)1;
