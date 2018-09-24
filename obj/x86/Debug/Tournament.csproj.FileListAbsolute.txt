@@ -384,5 +384,5 @@ C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csproj.CoreCompileInputs.cache
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csproj.CopyComplete
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.dll
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.pdb
-C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojResolveAssemblyReference.cache
 C:\repos\Tournament_Mod\bin\Debug\Pathfinding.dll
+C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojResolveAssemblyReference.cache
