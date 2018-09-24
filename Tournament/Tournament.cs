@@ -612,7 +612,7 @@ namespace Tournament
 
         public void UpdateBoardSectionPreview(ITimeStep dt)
         {
-            cam.transform.Rotate(0, (float)(15 * dt.PhysicalDeltaTime.Seconds), 0);//15° rotation per second
+            orbitcam.transform.Rotate(0, (float)(15 * dt.PhysicalDeltaTime.Seconds), 0);//15° rotation per second
         }
 
         public void LateUpdate()
