@@ -464,7 +464,7 @@ namespace Tournament
                 float xOffset = 0f;
                 float oobOffset = 2f;
                 float hpOffset = 42f;
-                float nameOffset = 74f;
+                float nameOffset = 78f;
 
                 GUIStyle style = _Left2;
                 if (!teamOne)
@@ -525,15 +525,15 @@ namespace Tournament
 
                     //float dimensions = _Left2.fontSize * nameBP.Length;
                     var dimensions = _Left2.CalcSize(new GUIContent(nameBP));
-                    float width = dimensions.x+124f;
+                    float width = dimensions.x+120f;
 
-                    if (dimensions.x <= 124f)
+                    if (dimensions.x <= 120f)
                     {
-                        GUI.Label(new Rect(nameOffset, 38f + entries * 16f, 124f, 16f), nameBP, style);
+                        GUI.Label(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), nameBP, style);
                     }
                     else
                     {
-                        GUI.BeginScrollView(new Rect(nameOffset, 38f + entries * 16f, 124f, 16f), new Vector2(t % width, 0), new Rect(-width, 0, 2*dimensions.x+124f, 16f), GUIStyle.none, GUIStyle.none);
+                        GUI.BeginScrollView(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), new Vector2(t % width, 0), new Rect(-width, 0, 2*dimensions.x+120f, 16f), GUIStyle.none, GUIStyle.none);
                         GUI.Label(new Rect(-dimensions.x, 0, dimensions.x, 16f), nameBP, style);
                         GUI.EndScrollView();
                     }
