@@ -124,6 +124,10 @@ namespace Tournament
 
         public bool defaultKeysBool;
 
+        public int localResources;
+
+        public bool localResourcesBool;
+
         public float oobReverse; // out of bounds and maoving away speed limit before dq time
 
         public float oobMaxBuffer; //out of bounds and moving away too fast buffer time in secs
@@ -152,6 +156,8 @@ namespace Tournament
         public float offsetD = 0f;
 
         public float timer;
+
+        public int localResourcesD = 0;
 
         public Tournament.SPAWN.DIR DirD = Tournament.SPAWN.DIR.Facing;
 
@@ -232,13 +238,41 @@ namespace Tournament
             foreach (TournamentEntry item in entry_t1)
             {
                 item.Spawn(spawndis, spawngap, spawngap2, entry_t1.Count, entry_t1.IndexOf(item));
-                item.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                if (localResourcesBool == false)
+                {
+                    item.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                }
+                else
+                {
+                    item.team_id.FactionInst().ResourceStore.SetResources(0);
+                }
             }
             t2_res = maxmat;
             foreach (TournamentEntry item2 in entry_t2)
             {
                 item2.Spawn(spawndis, spawngap, spawngap2, entry_t2.Count, entry_t2.IndexOf(item2));
-                item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                if (localResourcesBool == false)
+                {
+                    item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                }
+                else
+                {
+                    item2.team_id.FactionInst().ResourceStore.SetResources(0);
+                }
+            }
+            if (localResourcesBool == true) {
+                InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseLocalisedStores;
+                foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
+                {
+                    if (constructable.RawResource.Material.Maximum >= maxmat)
+                    {
+                        constructable.RawResource.Material.SetQuantity(maxmat);
+                    }
+                    else
+                    {
+                        constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum);
+                    }
+                }
             }
         }
 
@@ -356,6 +390,15 @@ namespace Tournament
                 defaultKeys = 0;
             }
 
+            if (localResourcesBool == true)
+            {
+                localResources = 1;
+            }
+            else
+            {
+                localResources = 0;
+            }
+
             string modFolder = Get.PerminentPaths.GetSpecificModDir("Tournament").ToString();
             FilesystemFileSource settingsFile = new FilesystemFileSource(modFolder + "settings.cfg");
             List<float> settingsList = new List<float>();
@@ -374,6 +417,7 @@ namespace Tournament
             settingsList.Add((float)eastWestBoard);
             settingsList.Add((float)northSouthBoard);
             settingsList.Add(spawngap2);
+            settingsList.Add((float)localResources);
             settingsList.Add(oobMaxBuffer);
             settingsList.Add(oobReverse);
 
@@ -403,8 +447,9 @@ namespace Tournament
                 eastWestBoard = (int)settingsList[12];
                 northSouthBoard = (int)settingsList[13];
                 spawngap2 = settingsList[14];
-                oobMaxBuffer = settingsList[15];
-                oobReverse = settingsList[16];
+                localResources = (int)settingsList[15];
+                oobMaxBuffer = settingsList[16];
+                oobReverse = settingsList[17];
 
                 if (defaultKeys == 1)
                 {
@@ -413,6 +458,15 @@ namespace Tournament
                 else
                 {
                     defaultKeysBool = false;
+                }
+
+                if (localResources == 1)
+                {
+                    localResourcesBool = true;
+                }
+                else
+                {
+                    localResourcesBool = false;
                 }
             }
             else
@@ -437,6 +491,7 @@ namespace Tournament
             Loc = LocD;
             offset = offsetD;
             defaultKeys = defaultKeysD;
+            localResources = localResourcesD;
             eastWestBoard = eastWestBoardD;
             northSouthBoard = northSouthBoardD;
             oobMaxBuffer = oobMaxBufferD;
@@ -448,6 +503,14 @@ namespace Tournament
             else
             {
                 defaultKeysBool = false;
+            }
+            if (localResources == 1)
+            {
+                localResourcesBool = true;
+            }
+            else
+            {
+                localResourcesBool = false;
             }
         }
 
@@ -570,6 +633,7 @@ namespace Tournament
 
                     string name = targetConstruct.blueprintName;
                     string hp = $"{Math.Round(targetConstruct.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
+                    string resources = $"{Math.Round(targetConstruct.RawResource.Material.Quantity, 0)}/{Math.Round(targetConstruct.RawResource.Material.Maximum, 0)}";
                     string ammo = $"{Math.Round(targetConstruct.Ammo.Ammo.Quantity, 0)}/{Math.Round(targetConstruct.Ammo.Ammo.Maximum, 0)}";
                     string fuel = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Quantity, 0)}/{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Maximum, 0)}";
                     string battery = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Energy.Quantity, 0)}/{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Energy.Maximum, 0)}";
@@ -612,21 +676,23 @@ namespace Tournament
               
                     GUI.Label(new Rect(xOffsetLabel, 0f, 90f, 38f), "Name:", _Left);
                     GUI.Label(new Rect(xOffsetLabel, 38f, 90f, 38f), "HP:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 76f, 90f, 38f), "Ammo:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 114f, 90f, 38f), "Fuel:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 152f, 90f, 38f), "Battery:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 190f, 90f, 38f), "Power:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 228f, 90f, 38f), "Altitude:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 266f, 90f, 38f), "Nearest Enemy:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 76f, 90f, 38f), "Materials:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 114f, 90f, 38f), "Ammo:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 152f, 90f, 38f), "Fuel:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 190f, 90f, 38f), "Battery:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 228f, 90f, 38f), "Power:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 266f, 90f, 38f), "Altitude:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 304f, 90f, 38f), "Nearest Enemy:", _Left);
 
                     GUI.Label(new Rect(xOffsetValue, 0f, 110f, 38f), name, _RightWrap);
                     GUI.Label(new Rect(xOffsetValue, 38f, 110f, 38f), hp, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 76f, 110f, 38f), ammo, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 114f, 110f, 38f), fuel, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 152f, 110f, 38f), battery, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 190f, 110f, 38f), power, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 228f, 110f, 38f), altitude, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 266f, 110f, 38f), nearest, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 76f, 110f, 38f), resources, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 114f, 110f, 38f), ammo, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 152f, 110f, 38f), fuel, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 190f, 110f, 38f), battery, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 228f, 110f, 38f), power, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 266f, 110f, 38f), altitude, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 304f, 110f, 38f), nearest, _Right);
 
 
 
