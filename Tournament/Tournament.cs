@@ -274,6 +274,10 @@ namespace Tournament
                     }
                 }
             }
+            else
+            {
+                InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseCentralStore;
+            }
         }
 
 		public unsafe void StartMatch()
