@@ -928,6 +928,73 @@ namespace Tournament
             }
 		}
 
+        public unsafe void UpdateCraft(MainConstruct val, string key)
+        {
+            if (!HUDLog[(val.GetTeam()).Id].ContainsKey(key))
+            {
+                HUDLog[(val.GetTeam()).Id].Add(key, new TournamentParticipant
+                {
+                    TeamId = val.GetTeam(),
+                    TeamName = val.GetTeam().FactionSpec().AbreviatedName,
+                    UniqueId = val.UniqueId,
+                    MothershipId = 0,
+                    BlueprintName = val.GetName(),
+                    AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count,
+                    HP = ((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (val.iMainStatus.GetFractionAliveBlocks() * 100f)),
+                    HPCUR = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberAliveBlocks()),
+                    HPMAX = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberBlocks())
+                });
+            }
+            if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
+            {
+                HUDLog[(val.GetTeam()).Id][key].AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count;
+                if ((val.CentreOfMass).y < minalt || (val.CentreOfMass).y > maxalt)
+                {
+                    HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                }
+                else
+                {
+                    float num = -1f;
+                    float num2 = -1f;
+                    MainConstruct[] array2 = StaticConstructablesManager.constructables.ToArray();
+                    foreach (MainConstruct val2 in array2)
+                    {
+                        if (val != val2 && val.GetTeam() != val2.GetTeam())
+                        {
+                            float num3 = Vector3.Distance(val.CentreOfMass, val2.CentreOfMass);
+                            if (num < 0f)
+                            {
+                                num = num3;
+                                //heading towards
+                                //num2 = Vector3.Distance(val.CentreOfMass + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.CentreOfMass;
+                                num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
+
+                            }
+                            else if (Vector3.Distance(val.CentreOfMass, val2.CentreOfMass) < num)
+                            {
+                                num = num3;
+                                //num2 = Vector3.Distance(val.get_CentreOfMass() + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.get_CentreOfMass());
+                                num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
+                            }
+                        }
+                    }
+                    if (num > maxdis && num < num2 - oobReverse) //out of bounds and moving away faster than  oobReverse m/s
+                    {
+                        HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                        if (HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer > oobMaxBuffer)
+                        {
+                            HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
+                        }
+                    }
+                    else
+                    {
+                        HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer = 0;
+                    }
+                }
+                HUDLog[(val.GetTeam()).Id][key].Disqual = (HUDLog[(val.GetTeam()).Id][key].OoBTime > maxoob);
+            }
+        }
+
 		public unsafe void FixedUpdate(ITimeStep dt)
 		{
 			
@@ -955,63 +1022,19 @@ namespace Tournament
 				MainConstruct[] array = StaticConstructablesManager.constructables.ToArray();
 				foreach (MainConstruct val in array)
 				{
-                    //Debug.Log("FixedUpdate ID: " + val.UniqueId);
+                    Debug.Log("FixedUpdate ID: " + val.UniqueId);
                     int id = 0;
                     if (val.Drones.loadedMothershipC != null)
                     {
                         id = val.Drones.loadedMothershipC.UniqueId;
+                        Debug.Log("FixedUpdate mothership ID: " + val.Drones.loadedMothershipC.UniqueId);
                     }
                     string key = "" + val.UniqueId + "," + id;
-                    //Debug.Log("FixedUpdate mothership ID: " + val.Drone.loadedMothershipC.UniqueId);
-                    //if (!HUDLog[((IntPtr)(void*)val.GetTeam()).Id][val.get_UniqueId()].Disqual || !HUDLog[((IntPtr)(void*)val.GetTeam()).Id][val.get_UniqueId()].Scrapping)
-                    if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
-					{
-						HUDLog[(val.GetTeam()).Id][key].AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count;
-						if ((val.CentreOfMass).y < minalt || (val.CentreOfMass).y > maxalt)
-						{
-							HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
-						}
-						else
-						{
-							float num = -1f;
-							float num2 = -1f;
-							MainConstruct[] array2 = StaticConstructablesManager.constructables.ToArray();
-							foreach (MainConstruct val2 in array2)
-							{
-								if (val != val2 && val.GetTeam() != val2.GetTeam())
-								{
-									float num3 = Vector3.Distance(val.CentreOfMass, val2.CentreOfMass);
-									if (num < 0f)
-									{
-										num = num3;
-                                        //heading towards
-                                        //num2 = Vector3.Distance(val.CentreOfMass + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.CentreOfMass;
-                                        num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
-                                            
-                                    }
-									else if (Vector3.Distance(val.CentreOfMass, val2.CentreOfMass) < num)
-									{
-										num = num3;
-										//num2 = Vector3.Distance(val.get_CentreOfMass() + val.get_MainPhysics().get_iVelocities().get_VelocityVector(), val2.get_CentreOfMass());
-                                        num2 = Vector3.Distance(val.CentreOfMass + val.Velocity, val2.CentreOfMass);
-                                    }
-								}
-							}
-							if (num > maxdis && num < num2-oobReverse) //out of bounds and moving away faster than  oobReverse m/s
-							{
-                                HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
-                                if(HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer > oobMaxBuffer)
-                                {
-                                    HUDLog[(val.GetTeam()).Id][key].OoBTime += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
-                                } 
-							}
-                            else
-                            {
-                                HUDLog[(val.GetTeam()).Id][key].OoBTimeBuffer = 0;
-                            }
-						}
-						HUDLog[(val.GetTeam()).Id][key].Disqual = (HUDLog[(val.GetTeam()).Id][key].OoBTime > maxoob);
-					}
+                    UpdateCraft(val, key);
+                    //foreach (MainConstruct d in val.Drones.myJustLoadedDrones)
+                    //{
+                    //    Debug.Log(d.GetForceID().Id);
+                    //}
 				}
 				timerTotal += Time.timeSinceLevelLoad - timerTotal - timerTotal2;
 			}
