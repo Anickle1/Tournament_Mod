@@ -96,7 +96,7 @@ namespace Tournament
             GUISliders.TextWidth = 240;
             GUISliders.DecimalPlaces = 0;
             GUISliders.UpperMargin = 25;
-
+            
             t.eastWestBoard = (int)GUISliders.DisplaySlider(0,"Map Tile East-West", t.eastWestBoard, 0, sectionsEastWest, enumMinMax.none, new ToolTip("The east-west boardindex, it is the first number on the map. 0 is the left side"));
             t.northSouthBoard = (int)GUISliders.DisplaySlider(1,"Map Tile North-South", t.northSouthBoard, 0, sectionsNorthSouth, enumMinMax.none, new ToolTip("The north-south boardindex, it is the second number on the map. 0 is the bottom side."));
             t.MoveCam();
