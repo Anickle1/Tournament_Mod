@@ -65,7 +65,7 @@ namespace Tournament
             _treeSelector.OnGui(new Rect(30f, 35f, 280f, 520f),(Action<BlueprintFile>)UpdateFileData);
             GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(340f, 0f, 600f, 400f), "Tournament Settings", GUI.skin.window);
+            GUILayout.BeginArea(new Rect(340f, 0f, 600f, 430f), "Tournament Settings", GUI.skin.window);
 			optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
             
 			GUISliders.TotalWidthOfWindow = 580;
@@ -83,16 +83,20 @@ namespace Tournament
 			t.maxtime = GUISliders.DisplaySlider(7, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
 			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
             GUILayout.EndScrollView();
-			GUILayout.EndArea();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(40);
+            t.localResourcesBool = GUILayout.Toggle(t.localResourcesBool, "Use Local Resources");
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(340f, 400f, 600f, 180f), "Battle Location", GUI.skin.window);
+            GUILayout.BeginArea(new Rect(340f, 430f, 600f, 150f), "Battle Location", GUI.skin.window);
             optpos = GUILayout.BeginScrollView(optpos, (GUILayoutOption[])new GUILayoutOption[0]);
 
             GUISliders.TotalWidthOfWindow = 580;
             GUISliders.TextWidth = 240;
             GUISliders.DecimalPlaces = 0;
             GUISliders.UpperMargin = 25;
-
+            
             t.eastWestBoard = (int)GUISliders.DisplaySlider(0,"Map Tile East-West", t.eastWestBoard, 0, sectionsEastWest, enumMinMax.none, new ToolTip("The east-west boardindex, it is the first number on the map. 0 is the left side"));
             t.northSouthBoard = (int)GUISliders.DisplaySlider(1,"Map Tile North-South", t.northSouthBoard, 0, sectionsNorthSouth, enumMinMax.none, new ToolTip("The north-south boardindex, it is the second number on the map. 0 is the bottom side."));
             t.MoveCam();
