@@ -81,7 +81,7 @@ namespace Tournament
 			t.maxdis = GUISliders.DisplaySlider(5, "Max Dis", t.maxdis, 0f, 10000f, 0, new ToolTip("Max distance from nearest enemy before penalty time added"));
 			t.maxoob = GUISliders.DisplaySlider(6, "Penalty Time", t.maxoob, 0f, 10000f, 0, new ToolTip("Max penalty time (seconds)"));
 			t.maxtime = GUISliders.DisplaySlider(7, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
-			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 100000f, 0, new ToolTip("Amount of material per team (centralised)"));
+			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 1000000f, 0, new ToolTip("Amount of material per team (centralised)"));
             GUILayout.EndScrollView();
             GUILayout.BeginHorizontal();
             GUILayout.Space(40);
