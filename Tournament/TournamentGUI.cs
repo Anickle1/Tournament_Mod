@@ -86,6 +86,8 @@ namespace Tournament
             GUILayout.BeginHorizontal();
             GUILayout.Space(40);
             t.localResourcesBool = GUILayout.Toggle(t.localResourcesBool, "Use Local Resources");
+            GUILayout.Space(250);
+            t.selectableResourcesBool = GUILayout.Toggle(t.selectableResourcesBool, "Use Individual Resources");
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
 
@@ -121,6 +123,7 @@ namespace Tournament
                     tournamentEntry.spawn_direction = t.Dir;
                     tournamentEntry.spawn_location = t.Loc;
                     tournamentEntry.offset = t.offset;
+                    tournamentEntry.res = t.maxmat;
                     tournamentEntry.bpf = _treeSelector.CurrentData;
                     t.entry_t1.Add(tournamentEntry);
                 }
@@ -132,6 +135,7 @@ namespace Tournament
                     tournamentEntry2.spawn_direction = t.Dir;
                     tournamentEntry2.spawn_location = t.Loc;
                     tournamentEntry2.offset = t.offset;
+                    tournamentEntry2.res = t.maxmat;
                     tournamentEntry2.bpf = _treeSelector.CurrentData;
                     t.entry_t2.Add(tournamentEntry2);
                 }
