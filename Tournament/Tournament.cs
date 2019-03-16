@@ -129,6 +129,8 @@ namespace Tournament
 
         public bool localResourcesBool;
 
+        public bool selectableResourcesBool;
+
         public float oobReverse; // out of bounds and maoving away speed limit before dq time
 
         public float oobMaxBuffer; //out of bounds and moving away too fast buffer time in secs
@@ -238,14 +240,28 @@ namespace Tournament
             t1_res = maxmat;
             foreach (TournamentEntry item in entry_t1)
             {
+                //spawn
                 item.Spawn(spawndis, spawngap, spawngap2, entry_t1.Count, entry_t1.IndexOf(item));
+
                 if (localResourcesBool == false)
                 {
-                    item.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                    item.team_id.FactionInst().ResourceStore.SetResources(maxmat); // set faction resource to maxmat
                 }
                 else
                 {
-                    item.team_id.FactionInst().ResourceStore.SetResources(0);
+                    item.team_id.FactionInst().ResourceStore.SetResources(0); // set faction to 0
+                    if(selectableResourcesBool == true) //if local + indiviual resources on
+                    {
+                        MainConstruct constructable = StaticConstructablesManager.constructables[StaticConstructablesManager.constructables.Count - 1];
+                        if (constructable.RawResource.Material.Maximum >= item.res)
+                        {
+                            constructable.RawResource.Material.SetQuantity(item.res); //set to selected
+                        }
+                        else
+                        {
+                            constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum); //set to bp max
+                        }
+                    }
                 }
             }
             t2_res = maxmat;
@@ -259,9 +275,22 @@ namespace Tournament
                 else
                 {
                     item2.team_id.FactionInst().ResourceStore.SetResources(0);
+                    if (selectableResourcesBool == true) //if local + indiviual resources on
+                    {
+                        MainConstruct constructable = StaticConstructablesManager.constructables[StaticConstructablesManager.constructables.Count - 1];
+                        if (constructable.RawResource.Material.Maximum >= item2.res)
+                        {
+                            constructable.RawResource.Material.SetQuantity(item2.res); //set to selected
+                        }
+                        else
+                        {
+                            constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum); //set to bp max
+                        }
+                    }
                 }
             }
-            if (localResourcesBool == true) {
+            if (localResourcesBool == true && selectableResourcesBool == false) // local biut not individual so try set all vehicles to maxmat
+            { 
                 InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseLocalisedStores;
                 foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
                 {
