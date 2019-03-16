@@ -173,7 +173,8 @@ namespace Tournament
 					{
 						text = text + "\n" + str;
 					}
-					GUILayout.Box(string.Format("<color=#ffa500ff>{3} {2}\n{0} {1}\n~-------SPAWNS-------~</color>{4}\n<color=#ffa500ff>~--------------------~</color>", item.bpf.Name, (item.bp.CalculateResourceCost(false, true)).Material, item.spawn_location, item.spawn_direction, text), (GUILayoutOption[])new GUILayoutOption[0]);
+                    string res = "Resource: " + item.res;
+					GUILayout.Box(string.Format("<color=#ffa500ff>{3} {2}\n{0} {1}\n{5}\n~-------SPAWNS-------~</color>{4}\n<color=#ffa500ff>~--------------------~</color>", item.bpf.Name, (item.bp.CalculateResourceCost(false, true)).Material, item.spawn_location, item.spawn_direction, text,res), (GUILayoutOption[])new GUILayoutOption[0]);
 					if (GUILayout.Button("^ Remove ^", (GUILayoutOption[])new GUILayoutOption[0]))
 					{
 						t.entry_t1.Remove(item);
@@ -191,7 +192,8 @@ namespace Tournament
 					{
 						text2 = text2 + "\n" + str2;
 					}
-					GUILayout.Box(string.Format("<color=#ff0000ff>{3} {2}\n{0} {1}\n~-------SPAWNS-------~</color>{4}\n<color=#ffa500ff>~--------------------~</color>", item2.bpf.Name, (item2.bp.CalculateResourceCost(false, true)).Material, item2.spawn_location, item2.spawn_direction, text2), (GUILayoutOption[])new GUILayoutOption[0]);
+                    string res2 = "Resource: " + item2.res;
+                    GUILayout.Box(string.Format("<color=#ff0000ff>{3} {2}\n{0} {1}\n{5}\n~-------SPAWNS-------~</color>{4}\n<color=#ffa500ff>~--------------------~</color>", item2.bpf.Name, (item2.bp.CalculateResourceCost(false, true)).Material, item2.spawn_location, item2.spawn_direction, text2,res2), (GUILayoutOption[])new GUILayoutOption[0]);
 					if (GUILayout.Button("^ Remove ^", (GUILayoutOption[])new GUILayoutOption[0]))
 					{
 						t.entry_t2.Remove(item2);

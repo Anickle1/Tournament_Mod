@@ -246,11 +246,15 @@ namespace Tournament
                 if (localResourcesBool == false)
                 {
                     item.team_id.FactionInst().ResourceStore.SetResources(maxmat); // set faction resource to maxmat
+                    if (selectableResourcesBool == true) //if central + indiviual resources on
+                    {
+                        item.team_id.FactionInst().ResourceStore.SetResources(item.res); //override with indivual max
+                    }
                 }
                 else
                 {
                     item.team_id.FactionInst().ResourceStore.SetResources(0); // set faction to 0
-                    if(selectableResourcesBool == true) //if local + indiviual resources on
+                    if (selectableResourcesBool == true) //if local + indiviual resources on
                     {
                         MainConstruct constructable = StaticConstructablesManager.constructables[StaticConstructablesManager.constructables.Count - 1];
                         if (constructable.RawResource.Material.Maximum >= item.res)
@@ -271,6 +275,10 @@ namespace Tournament
                 if (localResourcesBool == false)
                 {
                     item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
+                    if (selectableResourcesBool == true) //if central + indiviual resources on
+                    {
+                        item2.team_id.FactionInst().ResourceStore.SetResources(item2.res); //override with indivual max
+                    }
                 }
                 else
                 {
