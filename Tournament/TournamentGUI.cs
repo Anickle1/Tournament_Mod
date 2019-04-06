@@ -81,13 +81,13 @@ namespace Tournament
 			t.maxdis = GUISliders.DisplaySlider(5, "Max Dis", t.maxdis, 0f, 10000f, 0, new ToolTip("Max distance from nearest enemy before penalty time added"));
 			t.maxoob = GUISliders.DisplaySlider(6, "Penalty Time", t.maxoob, 0f, 10000f, 0, new ToolTip("Max penalty time (seconds)"));
 			t.maxtime = GUISliders.DisplaySlider(7, "Match Time", t.maxtime, 0f, 10000f, 0, new ToolTip("Max match time (seconds)"));
-			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 1000000f, 0, new ToolTip("Amount of material per team (centralised)"));
+			t.maxmat = GUISliders.DisplaySlider(8, "Starting Material", t.maxmat, 0f, 1000000f, 0, new ToolTip("Amount of material per team (centralised) or per vehicle (localised)"));
             GUILayout.EndScrollView();
             GUILayout.BeginHorizontal();
             GUILayout.Space(40);
-            t.localResourcesBool = GUILayout.Toggle(t.localResourcesBool, "Use Local Resources");
+            t.localResourcesBool = GUILayout.Toggle(t.localResourcesBool, new GUIContent("Use Local Resources","Off - Resources centralised for each team \n On - Resources allocated per vehicle/blueprint"));
             GUILayout.Space(250);
-            t.selectableResourcesBool = GUILayout.Toggle(t.selectableResourcesBool, "Use Individual Resources");
+            t.selectableResourcesBool = GUILayout.Toggle(t.selectableResourcesBool, new GUIContent("Use Individual Resources", "To allocate different resources to different teams/vehicles \n Uses the resource slider setting when 'add to team' is pressed \nWarning - max one vehicle per spwan stick in local resource setting"));
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
 
@@ -97,10 +97,10 @@ namespace Tournament
             GUISliders.TotalWidthOfWindow = 580;
             GUISliders.TextWidth = 240;
             GUISliders.DecimalPlaces = 0;
-            GUISliders.UpperMargin = 25;
+            GUISliders.UpperMargin = -350;
             
-            t.eastWestBoard = (int)GUISliders.DisplaySlider(0,"Map Tile East-West", t.eastWestBoard, 0, sectionsEastWest, enumMinMax.none, new ToolTip("The east-west boardindex, it is the first number on the map. 0 is the left side"));
-            t.northSouthBoard = (int)GUISliders.DisplaySlider(1,"Map Tile North-South", t.northSouthBoard, 0, sectionsNorthSouth, enumMinMax.none, new ToolTip("The north-south boardindex, it is the second number on the map. 0 is the bottom side."));
+            t.eastWestBoard = (int)GUISliders.DisplaySlider(9,"Map Tile East-West", t.eastWestBoard, 0, sectionsEastWest, enumMinMax.none, new ToolTip("The east-west boardindex, it is the first number on the map. 0 is the left side"));
+            t.northSouthBoard = (int)GUISliders.DisplaySlider(10,"Map Tile North-South", t.northSouthBoard, 0, sectionsNorthSouth, enumMinMax.none, new ToolTip("The north-south boardindex, it is the second number on the map. 0 is the bottom side."));
             t.MoveCam();
             GUILayout.EndScrollView();
             GUILayout.EndArea();

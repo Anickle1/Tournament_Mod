@@ -85,7 +85,9 @@ namespace Tournament
 
         public bool extraInfo;
 
-		private float timerTotal;
+        public bool showVehicles;
+
+        private float timerTotal;
 
 		private float timerTotal2;
 
@@ -402,6 +404,7 @@ namespace Tournament
             orbitindex = 0;
             orbitMothership = -1;
             extraInfo = false;
+            showVehicles = true;
 			cammode = false;
             
 		}
@@ -581,7 +584,15 @@ namespace Tournament
                     nameOffset = 2f;
                 }
 
-                float height = 38f + 16f * HUDLog[team.Key].Values.Count;
+                float height;
+                if (showVehicles)
+                {
+                    height = 38f + 16f * HUDLog[team.Key].Values.Count;
+                }
+                else
+                {
+                    height = 38f + 16f;
+                }
 
                 float teamCurrentHP = 0f;
                 float teamMaxHP = 0f;
@@ -612,35 +623,40 @@ namespace Tournament
                         //text = ((!flag) ? (text + string.Format("\n{2} {1,4} {0,6}", Math.Floor((double)(item2.Value.OoBTime / 60f)) + "m" + Math.Floor((double)item2.Value.OoBTime) % 60.0 + "s", Math.Round((double)item2.Value.HP, 1) + "%", item2.Value.BlueprintName)) : (text + string.Format("\n{0,-6} {1,-4} {2}", Math.Floor((double)(item2.Value.OoBTime / 60f)) + "m" + Math.Floor((double)item2.Value.OoBTime) % 60.0 + "s", Math.Round((double)item2.Value.HP, 1) + "%", item2.Value.BlueprintName)));
                     }
 
-                    // member name, hp + oob time or DQ
-                    if (!dqed)
+                    if (showVehicles)
                     {
-                        GUI.Label(new Rect(hpOffset, 38f + entries * 16f, 30f, 16f), percentHP, style);
-                        GUI.Label(new Rect(oobOffset, 38f + entries * 16f, 38f, 16f), oob, style);
-                    }
-                    else
-                    {
-                        GUI.Label(new Rect(oobOffset, 38f + entries * 16f, 30f, 16f), dq, style);
-                    }
-                    
-                    //GUI.Label(new Rect(nameOffset, 38f + entries*16f, 124f, 16f), nameBP, style);
 
-                    float scrollSpeed = 30;
-                    float t = Time.realtimeSinceStartup * scrollSpeed;
 
-                    //float dimensions = _Left2.fontSize * nameBP.Length;
-                    var dimensions = _Left2.CalcSize(new GUIContent(nameBP));
-                    float width = dimensions.x+120f;
+                        // member name, hp + oob time or DQ
+                        if (!dqed)
+                        {
+                            GUI.Label(new Rect(hpOffset, 38f + entries * 16f, 30f, 16f), percentHP, style);
+                            GUI.Label(new Rect(oobOffset, 38f + entries * 16f, 38f, 16f), oob, style);
+                        }
+                        else
+                        {
+                            GUI.Label(new Rect(oobOffset, 38f + entries * 16f, 30f, 16f), dq, style);
+                        }
 
-                    if (dimensions.x <= 120f)
-                    {
-                        GUI.Label(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), nameBP, style);
-                    }
-                    else
-                    {
-                        GUI.BeginScrollView(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), new Vector2(t % width, 0), new Rect(-width, 0, 2*dimensions.x+120f, 16f), GUIStyle.none, GUIStyle.none);
-                        GUI.Label(new Rect(-dimensions.x, 0, dimensions.x, 16f), nameBP, style);
-                        GUI.EndScrollView();
+                        //GUI.Label(new Rect(nameOffset, 38f + entries*16f, 124f, 16f), nameBP, style);
+
+                        float scrollSpeed = 30;
+                        float t = Time.realtimeSinceStartup * scrollSpeed;
+
+                        //float dimensions = _Left2.fontSize * nameBP.Length;
+                        var dimensions = _Left2.CalcSize(new GUIContent(nameBP));
+                        float width = dimensions.x + 120f;
+
+                        if (dimensions.x <= 120f)
+                        {
+                            GUI.Label(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), nameBP, style);
+                        }
+                        else
+                        {
+                            GUI.BeginScrollView(new Rect(nameOffset, 38f + entries * 16f, 120f, 16f), new Vector2(t % width, 0), new Rect(-width, 0, 2 * dimensions.x + 120f, 16f), GUIStyle.none, GUIStyle.none);
+                            GUI.Label(new Rect(-dimensions.x, 0, dimensions.x, 16f), nameBP, style);
+                            GUI.EndScrollView();
+                        }
                     }
 
                     entries++;
@@ -780,6 +796,7 @@ namespace Tournament
             bool freecamOn = false;
             bool orbitcamOn = false;
             bool changeExtraInfo = false;
+            bool changeShowVehicles = false;
 
             switch (defaultKeysBool)
             {
@@ -789,6 +806,7 @@ namespace Tournament
                     next = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.InventoryUi).Key);
                     previous = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.Interact).Key);
                     changeExtraInfo = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.CharacterSheetUi).Key);
+                    changeShowVehicles = Input.GetKeyUp(ftdKeyMap.GetKeyDef(KeyInputsFtd.EnemySpawnUi).Key);
                     freecamOn = Input.GetMouseButtonUp(1); // technically same as default atm
                     orbitcamOn = Input.GetMouseButtonUp(0); // technically same as default atm
                     break;
@@ -798,6 +816,7 @@ namespace Tournament
                     next = Input.GetKeyUp((KeyCode)101); // default e
                     previous = Input.GetKeyUp((KeyCode)113); // default q
                     changeExtraInfo = Input.GetKeyUp((KeyCode)122); // default z
+                    changeShowVehicles = Input.GetKeyUp((KeyCode)120); // default x
                     freecamOn = Input.GetKeyUp((KeyCode)324); // default left click
                     orbitcamOn = Input.GetKeyUp((KeyCode)323); // default right click
                     break;
@@ -822,7 +841,11 @@ namespace Tournament
             {
                 extraInfo =  (extraInfo == true) ? false : true;
             }
-			if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+            if (changeShowVehicles)
+            {
+                showVehicles = (showVehicles == true) ? false : true;
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") != 0f)
 			{
 				if (shift)
 				{
