@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using BrilliantSkies.Core.UniverseRepresentation;
+using BrilliantSkies.Ftd.Persistence.Inits;
+
 namespace Tournament
 {
 	public class TournamentEntry
@@ -140,7 +142,10 @@ namespace Tournament
                 InstanceSpecification.i.Factions.Factions.Find((InstanceFaction f) => f.FactionSpec.Name == "CHAL").Id);
             //BrilliantSkies.Core.Types.Vector3d vector3D = new BrilliantSkies.Core.Types.Vector3d(VLoc(gap, count, pos, dis));
             //vector3D.y += offset;
-            BlueprintConverter.Initiate(val, PlanetList.MainFrame.FramePositionToUniversalPosition(VLoc(gap, gap2, count, pos, dis, offset)), VDir(), team_id, null, 0);
+            BlueprintInitialisation bpinit = new BlueprintInitialisation(val);
+            bpinit.Positioning = new BlueprintPositioning( PlanetList.MainFrame.FramePositionToUniversalPosition(VLoc(gap, gap2, count, pos, dis, offset)), VDir());
+            bpinit.Run(team_id);
+            //BlueprintConverter.Initiate(val, PlanetList.MainFrame.FramePositionToUniversalPosition(VLoc(gap, gap2, count, pos, dis, offset)), VDir(), team_id, null, 0);
         }
 
         public Vector3 VLoc(float gap, float gap2, int count, int pos, float dis, float offset)

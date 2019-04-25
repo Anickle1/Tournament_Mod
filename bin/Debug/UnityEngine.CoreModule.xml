@@ -1619,7 +1619,7 @@ Note: Using raw JNI functions requires advanced knowledge of the Android Java Na
     </member>
     <member name="P:UnityEngine.Application.isLoadingLevel">
       <summary>
-        <para>Is some level being loaded? (Read Only)</para>
+        <para>Is some level being loaded? (Read Only) (Obsolete).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Application.isMobilePlatform">
@@ -1629,7 +1629,7 @@ Note: Using raw JNI functions requires advanced knowledge of the Android Java Na
     </member>
     <member name="P:UnityEngine.Application.isPlaying">
       <summary>
-        <para>Returns true when in any kind of player (Read Only).</para>
+        <para>Returns true when in any kind of player is active.(Read Only).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Application.isShowingSplashScreen">
@@ -1671,7 +1671,7 @@ Note: Using raw JNI functions requires advanced knowledge of the Android Java Na
     </member>
     <member name="?:UnityEngine.Application.lowMemory(UnityEngine.Application/LowMemoryCallback)">
       <summary>
-        <para>This event occurs when an iOS, Android, or Tizen device notifies of low memory while the app is running in the foreground. You can release non-critical assets from memory (such as, textures or audio clips) in response to this in order to avoid the app being terminated. You can also load smaller versions of such assets.  Furthermore, you should serialize any transient data to permanent storage to avoid data loss if the app is terminated.
+        <para>This event occurs when an iOS or Android device notifies of low memory while the app is running in the foreground. You can release non-critical assets from memory (such as, textures or audio clips) in response to this in order to avoid the app being terminated. You can also load smaller versions of such assets.  Furthermore, you should serialize any transient data to permanent storage to avoid data loss if the app is terminated.
 
 This event corresponds to the following callbacks on the different platforms:
 
@@ -1679,7 +1679,6 @@ This event corresponds to the following callbacks on the different platforms:
 
 - Android: onLowMemory() and onTrimMemory(level == TRIM_MEMORY_RUNNING_CRITICAL)
 
-- Tizen: ui_app_add_event_handler with type APP_EVENT_LOW_MEMORY
 
 Here is an example of handling the callback:</para>
       </summary>
@@ -1733,7 +1732,7 @@ Here is an example of handling the callback:</para>
     </member>
     <member name="P:UnityEngine.Application.streamingAssetsPath">
       <summary>
-        <para>Contains the path to the StreamingAssets folder (Read Only).</para>
+        <para>The path to the StreamingAssets folder (Read Only).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Application.systemLanguage">
@@ -1854,14 +1853,14 @@ Here is an example of handling the callback:</para>
     </member>
     <member name="M:UnityEngine.Application.LoadLevel(System.Int32)">
       <summary>
-        <para>Loads the level by its name or index.</para>
+        <para>Note: This is now obsolete. Use SceneManager.LoadScene instead.</para>
       </summary>
       <param name="index">The level to load.</param>
       <param name="name">The name of the level to load.</param>
     </member>
     <member name="M:UnityEngine.Application.LoadLevel(System.String)">
       <summary>
-        <para>Loads the level by its name or index.</para>
+        <para>Note: This is now obsolete. Use SceneManager.LoadScene instead.</para>
       </summary>
       <param name="index">The level to load.</param>
       <param name="name">The name of the level to load.</param>
@@ -2067,193 +2066,541 @@ Here is an example of handling the callback:</para>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreApproximatelyEqual(System.Single,System.Single)">
       <summary>
-        <para>Asserts that the values are approximately equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.
-
-Note: Every time you call the method with tolerance specified, a new instance of Assertions.Comparers.FloatComparer is created. For performance reasons you might want to instance your own comparer and pass it to the AreEqual method. If the tolerance is not specifies, a default comparer is used and the issue does not occur.</para>
+        <para>Assert the values are approximately equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreApproximatelyEqual(System.Single,System.Single,System.String)">
       <summary>
-        <para>Asserts that the values are approximately equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.
-
-Note: Every time you call the method with tolerance specified, a new instance of Assertions.Comparers.FloatComparer is created. For performance reasons you might want to instance your own comparer and pass it to the AreEqual method. If the tolerance is not specifies, a default comparer is used and the issue does not occur.</para>
+        <para>Assert the values are approximately equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreApproximatelyEqual(System.Single,System.Single,System.Single)">
       <summary>
-        <para>Asserts that the values are approximately equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.
-
-Note: Every time you call the method with tolerance specified, a new instance of Assertions.Comparers.FloatComparer is created. For performance reasons you might want to instance your own comparer and pass it to the AreEqual method. If the tolerance is not specifies, a default comparer is used and the issue does not occur.</para>
+        <para>Assert the values are approximately equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreApproximatelyEqual(System.Single,System.Single,System.Single,System.String)">
       <summary>
-        <para>Asserts that the values are approximately equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.
-
-Note: Every time you call the method with tolerance specified, a new instance of Assertions.Comparers.FloatComparer is created. For performance reasons you might want to instance your own comparer and pass it to the AreEqual method. If the tolerance is not specifies, a default comparer is used and the issue does not occur.</para>
+        <para>Assert the values are approximately equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual(UnityEngine.Object,UnityEngine.Object,System.String)">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreEqual">
+      <summary>
+        <para>Assert that the values are equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreEqual(T,T)">
       <summary>
-        <para>Asserts that the values are equal. If no comparer is specified, EqualityComparer&lt;T&gt;.Default is used.</para>
+        <para>Assert that the values are equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreEqual(T,T,System.String)">
       <summary>
-        <para>Asserts that the values are equal. If no comparer is specified, EqualityComparer&lt;T&gt;.Default is used.</para>
+        <para>Assert that the values are equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreEqual(T,T,System.String,System.Collections.Generic.IEqualityComparer`1&lt;T&gt;)">
       <summary>
-        <para>Asserts that the values are equal. If no comparer is specified, EqualityComparer&lt;T&gt;.Default is used.</para>
+        <para>Assert that the values are equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(System.Single,System.Single)">
       <summary>
-        <para>Asserts that the values are approximately not equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.</para>
+        <para>Asserts that the values are approximately not equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(System.Single,System.Single,System.String)">
       <summary>
-        <para>Asserts that the values are approximately not equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.</para>
+        <para>Asserts that the values are approximately not equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(System.Single,System.Single,System.Single)">
       <summary>
-        <para>Asserts that the values are approximately not equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.</para>
+        <para>Asserts that the values are approximately not equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(System.Single,System.Single,System.Single,System.String)">
       <summary>
-        <para>Asserts that the values are approximately not equal. An absolute error check is used for approximate equality check (|a-b| &lt; tolerance). Default tolerance is 0.00001f.</para>
+        <para>Asserts that the values are approximately not equal.</para>
       </summary>
       <param name="tolerance">Tolerance of approximation.</param>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual(UnityEngine.Object,UnityEngine.Object,System.String)">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.AreNotEqual">
+      <summary>
+        <para>Assert that the values are not equal.</para>
+      </summary>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotEqual(T,T)">
       <summary>
-        <para>Asserts that the values are not equal.</para>
+        <para>Assert that the values are not equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotEqual(T,T,System.String)">
       <summary>
-        <para>Asserts that the values are not equal.</para>
+        <para>Assert that the values are not equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.AreNotEqual(T,T,System.String,System.Collections.Generic.IEqualityComparer`1&lt;T&gt;)">
       <summary>
-        <para>Asserts that the values are not equal.</para>
+        <para>Assert that the values are not equal.</para>
       </summary>
-      <param name="expected"></param>
-      <param name="actual"></param>
-      <param name="message"></param>
-      <param name="comparer"></param>
+      <param name="expected">The assumed Assert value.</param>
+      <param name="actual">The exact Assert value.</param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="comparer">Method to compare expected and actual arguments have the same value.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsFalse(System.Boolean)">
       <summary>
-        <para>Asserts that the condition is false.</para>
+        <para>Return true when the condition is false.  Otherwise return false.</para>
       </summary>
-      <param name="condition"></param>
-      <param name="message"></param>
+      <param name="condition">true or false.</param>
+      <param name="message">The string used to describe the result of the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsFalse(System.Boolean,System.String)">
       <summary>
-        <para>Asserts that the condition is false.</para>
+        <para>Return true when the condition is false.  Otherwise return false.</para>
       </summary>
-      <param name="condition"></param>
-      <param name="message"></param>
+      <param name="condition">true or false.</param>
+      <param name="message">The string used to describe the result of the Assert.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.IsNotNull(UnityEngine.Object,System.String)">
+      <summary>
+        <para>Assert that the value is not null.</para>
+      </summary>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsNotNull(T)">
       <summary>
-        <para>Asserts that the value is not null.</para>
+        <para>Assert that the value is not null.</para>
       </summary>
-      <param name="value"></param>
-      <param name="message"></param>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsNotNull(T,System.String)">
       <summary>
-        <para>Asserts that the value is not null.</para>
+        <para>Assert that the value is not null.</para>
       </summary>
-      <param name="value"></param>
-      <param name="message"></param>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
+    </member>
+    <member name="M:UnityEngine.Assertions.Assert.IsNull(UnityEngine.Object,System.String)">
+      <summary>
+        <para>Assert the value is null.</para>
+      </summary>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsNull(T)">
       <summary>
-        <para>Asserts that the value is null.</para>
+        <para>Assert the value is null.</para>
       </summary>
-      <param name="value"></param>
-      <param name="message"></param>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsNull(T,System.String)">
       <summary>
-        <para>Asserts that the value is null.</para>
+        <para>Assert the value is null.</para>
       </summary>
-      <param name="value"></param>
-      <param name="message"></param>
+      <param name="value">The Object or type being checked for.</param>
+      <param name="message">The string used to describe the Assert.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsTrue(System.Boolean)">
       <summary>
         <para>Asserts that the condition is true.</para>
       </summary>
-      <param name="condition"></param>
-      <param name="message"></param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="condition">true or false.</param>
     </member>
     <member name="M:UnityEngine.Assertions.Assert.IsTrue(System.Boolean,System.String)">
       <summary>
         <para>Asserts that the condition is true.</para>
       </summary>
-      <param name="condition"></param>
-      <param name="message"></param>
+      <param name="message">The string used to describe the Assert.</param>
+      <param name="condition">true or false.</param>
     </member>
     <member name="T:UnityEngine.Assertions.AssertionException">
       <summary>
@@ -4148,7 +4495,7 @@ If called outside of a rendering callback and stereo is enabled, it will return 
       <summary>
         <para>Makes this camera's settings match other camera.</para>
       </summary>
-      <param name="other"></param>
+      <param name="other">Copy camera settings to the other camera.</param>
     </member>
     <member name="M:UnityEngine.Camera.CopyStereoDeviceProjectionMatrixToNonJittered(UnityEngine.Camera/StereoscopicEye)">
       <summary>
@@ -4252,7 +4599,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <param name="cubemap">The cube map to render to.</param>
       <param name="faceMask">A bitmask which determines which of the six faces are rendered to.</param>
       <returns>
-        <para>False is rendering fails, else true.</para>
+        <para>False if rendering fails, else true.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Camera.RenderToCubemap(UnityEngine.RenderTexture,System.Int32)">
@@ -4262,7 +4609,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <param name="faceMask">A bitfield indicating which cubemap faces should be rendered into.</param>
       <param name="cubemap">The texture to render to.</param>
       <returns>
-        <para>False is rendering fails, else true.</para>
+        <para>False if rendering fails, else true.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Camera.RenderWithShader(UnityEngine.Shader,System.String)">
@@ -4494,7 +4841,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="F:UnityEngine.Color.a">
       <summary>
-        <para>Alpha component of the color.</para>
+        <para>Alpha component of the color (0 is transparent, 1 is opaque).</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Color.b">
@@ -4644,9 +4991,9 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <summary>
         <para>Linearly interpolates between colors a and b by t.</para>
       </summary>
-      <param name="a">Color a</param>
-      <param name="b">Color b</param>
-      <param name="t">Float for combining a and b</param>
+      <param name="a">Color a.</param>
+      <param name="b">Color b.</param>
+      <param name="t">Float for combining a and b.</param>
     </member>
     <member name="M:UnityEngine.Color.LerpUnclamped(UnityEngine.Color,UnityEngine.Color,System.Single)">
       <summary>
@@ -6582,14 +6929,14 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="M:UnityEngine.Debug.Log(System.Object)">
       <summary>
-        <para>Logs message to the Unity Console.</para>
+        <para>Log a message to the Unity Console.</para>
       </summary>
       <param name="message">String or object to be converted to string representation for display.</param>
       <param name="context">Object to which the message applies.</param>
     </member>
     <member name="M:UnityEngine.Debug.Log(System.Object,UnityEngine.Object)">
       <summary>
-        <para>Logs message to the Unity Console.</para>
+        <para>Log a message to the Unity Console.</para>
       </summary>
       <param name="message">String or object to be converted to string representation for display.</param>
       <param name="context">Object to which the message applies.</param>
@@ -6791,9 +7138,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="T:UnityEngine.DeviceType">
       <summary>
-        <para>Enumeration for SystemInfo.deviceType, denotes a coarse grouping of kinds of devices.
-
-Windows Store Apps: tablets are treated as desktop machines, thus DeviceType.Handheld will only be returned for Windows Phones.</para>
+        <para>Enumeration for SystemInfo.deviceType, denotes a coarse grouping of kinds of devices.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.DeviceType.Console">
@@ -9571,9 +9916,9 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     </member>
     <member name="M:UnityEngine.GameObject.SetActive(System.Boolean)">
       <summary>
-        <para>Activates/Deactivates the GameObject.</para>
+        <para>ActivatesDeactivates the GameObject, depending on the given true or false/ value.</para>
       </summary>
-      <param name="value">Activate or deactivation the  object.</param>
+      <param name="value">Activate or deactivate the object, where true activates the GameObject and false deactivates the GameObject.</param>
     </member>
     <member name="T:UnityEngine.GeometryUtility">
       <summary>
@@ -11643,7 +11988,10 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
       <summary>
         <para>Returns true while the virtual button identified by buttonName is held down.</para>
       </summary>
-      <param name="buttonName"></param>
+      <param name="buttonName">The name of the button such as Jump.</param>
+      <returns>
+        <para>True when an axis has been pressed and not released.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Input.GetButtonDown(System.String)">
       <summary>
@@ -11664,7 +12012,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Input.GetKey(System.String)">
       <summary>
-        <para>Returns true while the user holds down the key identified by name. Think auto fire.</para>
+        <para>Returns true while the user holds down the key identified by name.</para>
       </summary>
       <param name="name"></param>
     </member>
@@ -11718,9 +12066,12 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Input.GetTouch(System.Int32)">
       <summary>
-        <para>Returns object representing status of a specific touch. (Does not allocate temporary variables).</para>
+        <para>Call Input.GetTouch to obtain a Touch struct.</para>
       </summary>
-      <param name="index"></param>
+      <param name="index">The touch input on the device screen.</param>
+      <returns>
+        <para>Touch details in the struct.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Input.ResetInputAxes">
       <summary>
@@ -13014,7 +13365,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="F:UnityEngine.KeyCode.KeypadEnter">
       <summary>
-        <para>Numeric keypad enter.</para>
+        <para>Numeric keypad Enter.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.KeyCode.KeypadEquals">
@@ -13400,7 +13751,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="T:UnityEngine.LayerMask">
       <summary>
-        <para>LayerMask allow you to display the LayerMask popup menu in the inspector.</para>
+        <para>Specifies Layers to use in a Physics.Raycast.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LayerMask.value">
@@ -13700,7 +14051,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="P:UnityEngine.LightmapSettings.lightmapsMode">
       <summary>
-        <para>Non-directional, Directional or Directional Specular lightmaps rendering mode.</para>
+        <para>NonDirectional or CombinedDirectional Specular lightmaps rendering mode.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LightmapSettings.lightProbes">
@@ -15856,19 +16207,25 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Mathf.Clamp(System.Single,System.Single,System.Single)">
       <summary>
-        <para>Clamps a value between a minimum float and maximum float value.</para>
+        <para>Clamps the given value between the given minimum float and maximum float values.  Returns the given value if it is within the min and max range.</para>
       </summary>
-      <param name="value"></param>
-      <param name="min"></param>
-      <param name="max"></param>
+      <param name="value">The floating point value to restrict inside the range defined by the min and max values.</param>
+      <param name="min">The minimum floating point value to compare against.</param>
+      <param name="max">The maximum floating point value to compare against.</param>
+      <returns>
+        <para>The float result between the min and max values.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Mathf.Clamp(System.Int32,System.Int32,System.Int32)">
       <summary>
-        <para>Clamps value between min and max and returns value.</para>
+        <para>Clamps the given value between a range defined by the given minimum integer and maximum integer values. Returns the given value if it is within min and max.</para>
       </summary>
-      <param name="value"></param>
-      <param name="min"></param>
-      <param name="max"></param>
+      <param name="value">The integer point value to restrict inside the min-to-max range</param>
+      <param name="min">The minimum integer point value to compare against.</param>
+      <param name="max">The maximum  integer point value to compare against.</param>
+      <returns>
+        <para>The int result between min and max values.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Mathf.Clamp01(System.Single)">
       <summary>
@@ -15893,9 +16250,12 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Mathf.Cos(System.Single)">
       <summary>
-        <para>Returns the cosine of angle f in radians.</para>
+        <para>Returns the cosine of angle f.</para>
       </summary>
-      <param name="f"></param>
+      <param name="f">The input angle, in radians.</param>
+      <returns>
+        <para>The return value between -1 and 1.</para>
+      </returns>
     </member>
     <member name="F:UnityEngine.Mathf.Deg2Rad">
       <summary>
@@ -16115,7 +16475,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="F:UnityEngine.Mathf.PI">
       <summary>
-        <para>The infamous 3.14159265358979... value (Read Only).</para>
+        <para>The well-known 3.14159265358979... value (Read Only).</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Mathf.PingPong(System.Single,System.Single)">
@@ -16164,9 +16524,9 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Mathf.Sin(System.Single)">
       <summary>
-        <para>Returns the sine of angle f in radians.</para>
+        <para>Returns the sine of angle f.</para>
       </summary>
-      <param name="f">The argument as a radian.</param>
+      <param name="f">The input angle, in radians.</param>
       <returns>
         <para>The return value between -1 and +1.</para>
       </returns>
@@ -16535,7 +16895,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="P:UnityEngine.Mesh.isReadable">
       <summary>
-        <para>Returns state of the Read/Write Enabled checkbox when model was imported.</para>
+        <para>Returns true if the Mesh is read/write enabled, or false if it is not.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Mesh.normals">
@@ -18011,20 +18371,20 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>Destroys the object obj immediately. You are strongly recommended to use Destroy instead.</para>
       </summary>
       <param name="obj">Object to be destroyed.</param>
-      <param name="allowDestroyingAssets">Set to true to allow assets to be destoyed.</param>
+      <param name="allowDestroyingAssets">Set to true to allow assets to be destroyed.</param>
     </member>
     <member name="M:UnityEngine.Object.DestroyImmediate(UnityEngine.Object,System.Boolean)">
       <summary>
         <para>Destroys the object obj immediately. You are strongly recommended to use Destroy instead.</para>
       </summary>
       <param name="obj">Object to be destroyed.</param>
-      <param name="allowDestroyingAssets">Set to true to allow assets to be destoyed.</param>
+      <param name="allowDestroyingAssets">Set to true to allow assets to be destroyed.</param>
     </member>
     <member name="M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)">
       <summary>
-        <para>Makes the object target not be destroyed automatically when loading a new scene.</para>
+        <para>Do not destroy the target Object when loading a new Scene.</para>
       </summary>
-      <param name="target"></param>
+      <param name="target">An Object not destroyed on Scene change.</param>
     </member>
     <member name="M:UnityEngine.Object.FindObjectOfType(System.Type)">
       <summary>
@@ -18032,7 +18392,7 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       </summary>
       <param name="type">The type of object to find.</param>
       <returns>
-        <para>An array of objects which matched the specified type, cast as Object.</para>
+        <para>This returns the  Object that matches the specified type. It returns null if no Object matches the type.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Object.FindObjectsOfType(System.Type)">
@@ -18219,8 +18579,11 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="M:UnityEngine.Object.ToString">
       <summary>
-        <para>Returns the name of the game object.</para>
+        <para>Returns the name of the GameObject.</para>
       </summary>
+      <returns>
+        <para>The name returned by ToString.</para>
+      </returns>
     </member>
     <member name="T:UnityEngine.OcclusionArea">
       <summary>
@@ -19321,22 +19684,37 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="T:UnityEngine.Pose">
       <summary>
-        <para>Representation of a Position, and a Rotation in 3D Space</para>
+        <para>Representation of a Position, and a Rotation in 3D Space.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Pose.forward">
+      <summary>
+        <para>Returns the forward vector of the pose.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Pose.identity">
       <summary>
-        <para>shorthand for pose which represents zero position, and an identity rotation</para>
+        <para>Shorthand for pose which represents zero position, and an identity rotation.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Pose.position">
       <summary>
-        <para>the position component of the pose</para>
+        <para>The position component of the pose.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Pose.right">
+      <summary>
+        <para>Returns the right vector of the pose.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Pose.rotation">
       <summary>
-        <para>the rotation component of the pose</para>
+        <para>The rotation component of the pose.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Pose.up">
+      <summary>
+        <para>Returns the up vector of the pose.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Pose.#ctor">
@@ -19346,13 +19724,13 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="M:UnityEngine.Pose.GetTransformedBy(UnityEngine.Pose)">
       <summary>
-        <para>Transforms the current pose into the local space of the provided pose</para>
+        <para>Transforms the current pose into the local space of the provided pose.</para>
       </summary>
       <param name="lhs"></param>
     </member>
     <member name="M:UnityEngine.Pose.GetTransformedBy(UnityEngine.Transform)">
       <summary>
-        <para>Transforms the current pose into the local space of the provided pose</para>
+        <para>Transforms the current pose into the local space of the provided pose.</para>
       </summary>
       <param name="lhs"></param>
     </member>
@@ -19948,7 +20326,7 @@ The block is specified by its x,y offset in the texture and by its width and hei
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.enableBinaryLog">
       <summary>
-        <para>Sets profiler output file in built players.</para>
+        <para>Enables the logging of profiling data to a file.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.enabled">
@@ -19958,7 +20336,7 @@ The block is specified by its x,y offset in the texture and by its width and hei
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.logFile">
       <summary>
-        <para>Sets profiler output file in built players.</para>
+        <para>Specifies the file to use when writing profiling data.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.maxNumberOfSamplesPerFrame">
@@ -20492,7 +20870,7 @@ frame. Minimum value is 1 and maximum is 33.</para>
     </member>
     <member name="P:UnityEngine.Quaternion.eulerAngles">
       <summary>
-        <para>Returns the euler angle representation of the rotation.</para>
+        <para>Returns or sets the euler angle representation of the rotation.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Quaternion.identity">
@@ -20502,7 +20880,7 @@ frame. Minimum value is 1 and maximum is 33.</para>
     </member>
     <member name="F:UnityEngine.Quaternion.w">
       <summary>
-        <para>W component of the Quaternion. Don't modify this directly unless you know quaternions inside out.</para>
+        <para>W component of the Quaternion. Do not directly modify quaternions.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Quaternion.x">
@@ -20552,7 +20930,7 @@ frame. Minimum value is 1 and maximum is 33.</para>
     </member>
     <member name="M:UnityEngine.Quaternion.Euler(System.Single,System.Single,System.Single)">
       <summary>
-        <para>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis (in that order).</para>
+        <para>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis.</para>
       </summary>
       <param name="x"></param>
       <param name="y"></param>
@@ -20560,7 +20938,7 @@ frame. Minimum value is 1 and maximum is 33.</para>
     </member>
     <member name="M:UnityEngine.Quaternion.Euler(UnityEngine.Vector3)">
       <summary>
-        <para>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis (in that order).</para>
+        <para>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis.</para>
       </summary>
       <param name="euler"></param>
     </member>
@@ -20834,14 +21212,14 @@ frame. Minimum value is 1 and maximum is 33.</para>
     </member>
     <member name="M:UnityEngine.Random.Range(System.Single,System.Single)">
       <summary>
-        <para>Returns a random float number between and min [inclusive] and max [inclusive] (Read Only).</para>
+        <para>Return a random float number between min [inclusive] and max [inclusive] (Read Only).</para>
       </summary>
       <param name="min"></param>
       <param name="max"></param>
     </member>
     <member name="M:UnityEngine.Random.Range(System.Int32,System.Int32)">
       <summary>
-        <para>Returns a random integer number between min [inclusive] and max [exclusive] (Read Only).</para>
+        <para>Return a random integer number between min [inclusive] and max [exclusive] (Read Only).</para>
       </summary>
       <param name="min"></param>
       <param name="max"></param>
@@ -21475,7 +21853,7 @@ frame. Minimum value is 1 and maximum is 33.</para>
       <summary>
         <para>Get the corners of the calculated rectangle in world space.</para>
       </summary>
-      <param name="fourCornersArray">The ray that corners are filled into.</param>
+      <param name="fourCornersArray">The array that corners are filled into.</param>
     </member>
     <member name="T:UnityEngine.RectTransform.ReapplyDrivenProperties">
       <summary>
@@ -22213,6 +22591,11 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
     <member name="F:UnityEngine.Rendering.BuiltinRenderTextureType.Reflections">
       <summary>
         <para>Reflections gathered from default reflection and reflections probes.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.BuiltinRenderTextureType.RenderTexture">
+      <summary>
+        <para>The given RenderTexture.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Rendering.BuiltinRenderTextureType.ResolvedDepth">
@@ -23794,6 +24177,11 @@ Allows for CPU determination of whether the GPU has passed the point in its proc
         <para>PlayStation Vita graphics API.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.Rendering.GraphicsDeviceType.Switch">
+      <summary>
+        <para>Nintendo Switch graphics API.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.Rendering.GraphicsDeviceType.Vulkan">
       <summary>
         <para>Vulkan (EXPERIMENTAL).</para>
@@ -25089,6 +25477,9 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
       <summary>
         <para>Actually creates the RenderTexture.</para>
       </summary>
+      <returns>
+        <para>True if the texture is created, else false.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.RenderTexture.#ctor(System.Int32,System.Int32,System.Int32)">
       <summary>
@@ -25916,11 +26307,6 @@ See RenderTexture.useMipMap.</para>
         <para>In the player on Nintendo Switch.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.RuntimePlatform.TizenPlayer">
-      <summary>
-        <para>In the player on Tizen.</para>
-      </summary>
-    </member>
     <member name="F:UnityEngine.RuntimePlatform.WebGLPlayer">
       <summary>
         <para>In the player on WebGL</para>
@@ -26010,37 +26396,37 @@ See RenderTexture.useMipMap.</para>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.buildIndex">
       <summary>
-        <para>Returns the index of the scene in the Build Settings. Always returns -1 if the scene was loaded through an AssetBundle.</para>
+        <para>Return the index of the Scene in the Build Settings.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.isDirty">
       <summary>
-        <para>Returns true if the scene is modifed.</para>
+        <para>Returns true if the Scene is modifed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.isLoaded">
       <summary>
-        <para>Returns true if the scene is loaded.</para>
+        <para>Returns true if the Scene is loaded.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.name">
       <summary>
-        <para>Returns the name of the scene.</para>
+        <para>Returns the name of the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.path">
       <summary>
-        <para>Returns the relative path of the scene. Like: "AssetsMyScenesMyScene.unity".</para>
+        <para>Returns the relative path of the Scene. Like: "AssetsMyScenesMyScene.unity".</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SceneManagement.Scene.rootCount">
       <summary>
-        <para>The number of root transforms of this scene.</para>
+        <para>The number of root transforms of this Scene.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.SceneManagement.Scene.GetRootGameObjects">
       <summary>
-        <para>Returns all the root game objects in the scene.</para>
+        <para>Returns all the root game objects in the Scene.</para>
       </summary>
       <returns>
         <para>An array of game objects.</para>
@@ -26048,17 +26434,17 @@ See RenderTexture.useMipMap.</para>
     </member>
     <member name="M:UnityEngine.SceneManagement.Scene.GetRootGameObjects(System.Collections.Generic.List`1&lt;UnityEngine.GameObject&gt;)">
       <summary>
-        <para>Returns all the root game objects in the scene.</para>
+        <para>Returns all the root game objects in the Scene.</para>
       </summary>
       <param name="rootGameObjects">A list which is used to return the root game objects.</param>
     </member>
     <member name="M:UnityEngine.SceneManagement.Scene.IsValid">
       <summary>
-        <para>Whether this is a valid scene.
-A scene may be invalid if, for example, you tried to open a scene that does not exist. In this case, the scene returned from EditorSceneManager.OpenScene would return False for IsValid.</para>
+        <para>Whether this is a valid Scene.
+A Scene may be invalid if, for example, you tried to open a Scene that does not exist. In this case, the Scene returned from EditorSceneManager.OpenScene would return False for IsValid.</para>
       </summary>
       <returns>
-        <para>Whether this is a valid scene.</para>
+        <para>Whether this is a valid Scene.</para>
       </returns>
     </member>
     <member name="?:UnityEngine.SceneManagement.Scene.op_Equal(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene)">
@@ -26082,9 +26468,9 @@ A scene may be invalid if, for example, you tried to open a scene that does not 
     </member>
     <member name="?:UnityEngine.SceneManagement.SceneManager.activeSceneChanged(UnityEngine.Events.UnityAction`2&lt;UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene&gt;)">
       <summary>
-        <para>Add a delegate to this to get notifications when the active Scene has changed</para>
+        <para>Subscribe to this event to get notified when the active Scene has changed.</para>
       </summary>
-      <param name="value"></param>
+      <param name="value">Previous active scene and the new active scene.</param>
     </member>
     <member name="P:UnityEngine.SceneManagement.SceneManager.sceneCount">
       <summary>
@@ -26175,8 +26561,13 @@ A scene may be invalid if, for example, you tried to open a scene that does not 
       </summary>
       <param name="sceneName">Name or path of the Scene to load.</param>
       <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
-      <param name="mode">Allows you to specify whether or not to load the Scene additively.
-        See SceneManagement.LoadSceneMode for more information about the options.</param>
+      <param name="mode">Allows you to specify whether or not to load the Scene additively. See SceneManagement.LoadSceneMode for more information about the options.</param>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="parameters">Various parameters used to load the Scene.</param>
+      <returns>
+        <para>A handle to the Scene being loaded.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.LoadScene(System.String,UnityEngine.SceneManagement.LoadSceneMode)">
       <summary>
@@ -26184,8 +26575,13 @@ A scene may be invalid if, for example, you tried to open a scene that does not 
       </summary>
       <param name="sceneName">Name or path of the Scene to load.</param>
       <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
-      <param name="mode">Allows you to specify whether or not to load the Scene additively.
-        See SceneManagement.LoadSceneMode for more information about the options.</param>
+      <param name="mode">Allows you to specify whether or not to load the Scene additively. See SceneManagement.LoadSceneMode for more information about the options.</param>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="parameters">Various parameters used to load the Scene.</param>
+      <returns>
+        <para>A handle to the Scene being loaded.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(System.String,UnityEngine.SceneManagement.LoadSceneMode)">
       <summary>
@@ -27537,6 +27933,45 @@ Returns NULL if there is no associated alpha texture for the source sprite. This
         <para>Returns a copy of the array containing sprite mesh vertex positions.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2,System.Single,System.UInt32)">
+      <summary>
+        <para>Create a new Sprite object.</para>
+      </summary>
+      <param name="texture">Texture from which to obtain the sprite graphic.</param>
+      <param name="rect">Rectangular section of the texture to use for the sprite.</param>
+      <param name="pivot">Sprite's pivot point relative to its graphic rectangle.</param>
+      <param name="pixelsPerUnit">The number of pixels in the sprite that correspond to one unit in world space.</param>
+      <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
+      <param name="meshType">Controls the type of mesh generated for the sprite.</param>
+      <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
+    </member>
+    <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2,System.Single,System.UInt32,UnityEngine.SpriteMeshType)">
+      <summary>
+        <para>Create a new Sprite object.</para>
+      </summary>
+      <param name="texture">Texture from which to obtain the sprite graphic.</param>
+      <param name="rect">Rectangular section of the texture to use for the sprite.</param>
+      <param name="pivot">Sprite's pivot point relative to its graphic rectangle.</param>
+      <param name="pixelsPerUnit">The number of pixels in the sprite that correspond to one unit in world space.</param>
+      <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
+      <param name="meshType">Controls the type of mesh generated for the sprite.</param>
+      <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
+    </member>
+    <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2,System.Single,System.UInt32,UnityEngine.SpriteMeshType,UnityEngine.Vector4,System.Boolean)">
+      <summary>
+        <para>Create a new Sprite object.</para>
+      </summary>
+      <param name="texture">Texture from which to obtain the sprite graphic.</param>
+      <param name="rect">Rectangular section of the texture to use for the sprite.</param>
+      <param name="pivot">Sprite's pivot point relative to its graphic rectangle.</param>
+      <param name="pixelsPerUnit">The number of pixels in the sprite that correspond to one unit in world space.</param>
+      <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
+      <param name="meshType">Controls the type of mesh generated for the sprite.</param>
+      <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
+    </member>
     <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2,System.Single,System.UInt32,UnityEngine.SpriteMeshType,UnityEngine.Vector4)">
       <summary>
         <para>Create a new Sprite object.</para>
@@ -27548,8 +27983,35 @@ Returns NULL if there is no associated alpha texture for the source sprite. This
       <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
       <param name="meshType">Controls the type of mesh generated for the sprite.</param>
       <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
     </member>
-    <member name="M:UnityEngine.Sprite.GetPhysicsShape">
+    <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2)">
+      <summary>
+        <para>Create a new Sprite object.</para>
+      </summary>
+      <param name="texture">Texture from which to obtain the sprite graphic.</param>
+      <param name="rect">Rectangular section of the texture to use for the sprite.</param>
+      <param name="pivot">Sprite's pivot point relative to its graphic rectangle.</param>
+      <param name="pixelsPerUnit">The number of pixels in the sprite that correspond to one unit in world space.</param>
+      <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
+      <param name="meshType">Controls the type of mesh generated for the sprite.</param>
+      <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
+    </member>
+    <member name="M:UnityEngine.Sprite.Create(UnityEngine.Texture2D,UnityEngine.Rect,UnityEngine.Vector2,System.Single)">
+      <summary>
+        <para>Create a new Sprite object.</para>
+      </summary>
+      <param name="texture">Texture from which to obtain the sprite graphic.</param>
+      <param name="rect">Rectangular section of the texture to use for the sprite.</param>
+      <param name="pivot">Sprite's pivot point relative to its graphic rectangle.</param>
+      <param name="pixelsPerUnit">The number of pixels in the sprite that correspond to one unit in world space.</param>
+      <param name="extrude">Amount by which the sprite mesh should be expanded outwards.</param>
+      <param name="meshType">Controls the type of mesh generated for the sprite.</param>
+      <param name="border">The border sizes of the sprite (X=left, Y=bottom, Z=right, W=top).</param>
+      <param name="generateFallbackPhysicsShape">Generates a default physics shape for the sprite.</param>
+    </member>
+    <member name="M:UnityEngine.Sprite.GetPhysicsShape(System.Int32,System.Collections.Generic.List`1&lt;UnityEngine.Vector2&gt;)">
       <summary>
         <para>Gets a physics shape from the Sprite by its index.</para>
       </summary>
@@ -27852,14 +28314,14 @@ Returns NULL if there is no associated alpha texture for the source sprite. This
       <summary>
         <para>StaticBatchingUtility.Combine prepares all children of the staticBatchRoot for static batching.</para>
       </summary>
-      <param name="staticBatchRoot"></param>
+      <param name="staticBatchRoot">The GameObject that should become the root of the combined batch.</param>
     </member>
     <member name="M:UnityEngine.StaticBatchingUtility.Combine(UnityEngine.GameObject[],UnityEngine.GameObject)">
       <summary>
-        <para>StaticBatchingUtility.Combine prepares all gos for static batching. staticBatchRoot is treated as their parent.</para>
+        <para>StaticBatchingUtility.Combine prepares all GameObjects contained in gos for static batching. staticBatchRoot is treated as their parent.</para>
       </summary>
-      <param name="gos"></param>
-      <param name="staticBatchRoot"></param>
+      <param name="gos">The GameObjects to prepare for static batching.</param>
+      <param name="staticBatchRoot">The GameObject that should become the root of the combined batch.</param>
     </member>
     <member name="T:UnityEngine.StereoTargetEyeMask">
       <summary>
@@ -29279,7 +29741,7 @@ Note that GPUFences are only supported on PS4.</para>
     </member>
     <member name="P:UnityEngine.Time.deltaTime">
       <summary>
-        <para>The time in seconds it took to complete the last frame (Read Only).</para>
+        <para>The completion time in seconds since the last frame (Read Only).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Time.fixedDeltaTime">
@@ -29314,7 +29776,7 @@ Note that GPUFences are only supported on PS4.</para>
     </member>
     <member name="P:UnityEngine.Time.maximumDeltaTime">
       <summary>
-        <para>The maximum time a frame can take. Physics and other fixed frame rate updates (like MonoBehaviour's MonoBehaviour.FixedUpdate).</para>
+        <para>The maximum time a frame can take. Physics and other fixed frame rate updates (like MonoBehaviour's MonoBehaviour.FixedUpdate) will be performed only for this duration of time per frame.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Time.maximumParticleDeltaTime">
@@ -29878,7 +30340,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="P:UnityEngine.Transform.localRotation">
       <summary>
-        <para>The rotation of the transform relative to the parent transform's rotation.</para>
+        <para>The rotation of the transform relative to the transform rotation of the parent.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Transform.localScale">
@@ -29903,7 +30365,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="P:UnityEngine.Transform.position">
       <summary>
-        <para>The position of the transform in world space.</para>
+        <para>The world space position of the Transform.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Transform.right">
@@ -29938,9 +30400,13 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="M:UnityEngine.Transform.Find(System.String)">
       <summary>
-        <para>Finds a child by name and returns it.</para>
+        <para>Finds a child by n and returns it.</para>
       </summary>
-      <param name="name">Name of child to be found.</param>
+      <param name="n">Name of child to be found.</param>
+      <param name="name"></param>
+      <returns>
+        <para>The returned child transform or null if no child is found.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Transform.GetChild(System.Int32)">
       <summary>
@@ -30034,27 +30500,28 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="M:UnityEngine.Transform.Rotate(UnityEngine.Vector3,UnityEngine.Space)">
       <summary>
-        <para>Applies a rotation of eulerAngles.z degrees around the z axis, eulerAngles.x degrees around the x axis, and eulerAngles.y degrees around the y axis (in that order).</para>
+        <para>Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).</para>
       </summary>
-      <param name="eulerAngles">Rotation to apply.</param>
-      <param name="relativeTo">Rotation is local to object or World.</param>
+      <param name="eulers">The rotation to apply.</param>
+      <param name="relativeTo">Determines whether to rotate the GameObject either locally to  the GameObject or relative to the Scene in world space.</param>
+      <param name="eulerAngles"></param>
     </member>
     <member name="M:UnityEngine.Transform.Rotate(System.Single,System.Single,System.Single,UnityEngine.Space)">
       <summary>
         <para>Applies a rotation of zAngle degrees around the z axis, xAngle degrees around the x axis, and yAngle degrees around the y axis (in that order).</para>
       </summary>
-      <param name="xAngle">Degrees to rotate around the X axis.</param>
-      <param name="yAngle">Degrees to rotate around the Y axis.</param>
-      <param name="zAngle">Degrees to rotate around the Z axis.</param>
-      <param name="relativeTo">Rotation is local to object or World.</param>
+      <param name="relativeTo">Determines whether to rotate the GameObject either is locally to the GameObject or relative to the Scene in world space.</param>
+      <param name="xAngle">Degrees to rotate the GameObject around the X axis.</param>
+      <param name="yAngle">Degrees to rotate the GameObject around the Y axis.</param>
+      <param name="zAngle">Degrees to rotate the GameObject around the Z axis.</param>
     </member>
     <member name="M:UnityEngine.Transform.Rotate(UnityEngine.Vector3,System.Single,UnityEngine.Space)">
       <summary>
-        <para>Rotates the object around axis by angle degrees.</para>
+        <para>Rotates the object around the given axis by the number of degrees defined by the given angle.</para>
       </summary>
-      <param name="axis">Axis to apply rotation to.</param>
-      <param name="angle">Degrees to rotation to apply.</param>
-      <param name="relativeTo">Rotation is local to object or World.</param>
+      <param name="angle">The degrees of rotation to apply.</param>
+      <param name="axis">The axis to apply rotation to.</param>
+      <param name="relativeTo">Determines whether to rotate the GameObject either locally to the GameObject or relative to the Scene in world space.</param>
     </member>
     <member name="M:UnityEngine.Transform.RotateAround(UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
       <summary>
@@ -30247,6 +30714,12 @@ Useful for restarting a trail from a new position.</para>
         <para>Get the tag of this SpriteAtlas.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.U2D.SpriteAtlas.CanBindTo(UnityEngine.Sprite)">
+      <summary>
+        <para>Return true if Sprite is packed into this SpriteAtlas.</para>
+      </summary>
+      <param name="sprite"></param>
+    </member>
     <member name="M:UnityEngine.U2D.SpriteAtlas.GetSprite(System.String)">
       <summary>
         <para>Clone the first Sprite in this atlas that matches the name packed in this atlas and return it.</para>
@@ -30273,6 +30746,12 @@ Useful for restarting a trail from a new position.</para>
       <summary>
         <para>Manages SpriteAtlas during runtime.</para>
       </summary>
+    </member>
+    <member name="?:UnityEngine.U2D.SpriteAtlasManager.atlasRegistered(System.Action`1&lt;UnityEngine.U2D.SpriteAtlas&gt;)">
+      <summary>
+        <para>Trigger when a SpriteAtlas is registered via invoking the callback in U2D.SpriteAtlasManager.atlasRequested.</para>
+      </summary>
+      <param name="value"></param>
     </member>
     <member name="?:UnityEngine.U2D.SpriteAtlasManager.atlasRequested(UnityEngine.U2D.SpriteAtlasManager/RequestAtlasCallback)">
       <summary>
@@ -30900,6 +31379,9 @@ Useful for restarting a trail from a new position.</para>
       </summary>
       <param name="from">The vector from which the angular difference is measured.</param>
       <param name="to">The vector to which the angular difference is measured.</param>
+      <returns>
+        <para>The angle in degrees between the two vectors.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Vector3.ClampMagnitude(UnityEngine.Vector3,System.Single)">
       <summary>
@@ -30982,11 +31464,14 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="M:UnityEngine.Vector3.MoveTowards(UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
       <summary>
-        <para>Moves a point current in a straight line towards a target point.</para>
+        <para>Calculate a position between the points specified by current and target, moving no farther than the distance specified by maxDistanceDelta.</para>
       </summary>
-      <param name="current"></param>
-      <param name="target"></param>
-      <param name="maxDistanceDelta"></param>
+      <param name="current">The position to move from.</param>
+      <param name="target">The position to move towards.</param>
+      <param name="maxDistanceDelta">Distance to move current per call.</param>
+      <returns>
+        <para>The new position.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Vector3.Normalize(UnityEngine.Vector3)">
       <summary>
@@ -31089,10 +31574,13 @@ Useful for restarting a trail from a new position.</para>
       <summary>
         <para>Rotates a vector current towards target.</para>
       </summary>
-      <param name="current"></param>
-      <param name="target"></param>
-      <param name="maxRadiansDelta"></param>
-      <param name="maxMagnitudeDelta"></param>
+      <param name="current">The vector being managed.</param>
+      <param name="target">The vector.</param>
+      <param name="maxRadiansDelta">The distance between the two vectors  in radians.</param>
+      <param name="maxMagnitudeDelta">The length of the radian.</param>
+      <returns>
+        <para>The location that RotateTowards generates.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Vector3.Scale(UnityEngine.Vector3,UnityEngine.Vector3)">
       <summary>
@@ -31705,7 +32193,7 @@ Useful for restarting a trail from a new position.</para>
       <summary>
         <para>Creates a yield instruction to wait for a given number of seconds using scaled time.</para>
       </summary>
-      <param name="seconds"></param>
+      <param name="seconds">Delay execution by the amount of time in seconds.</param>
     </member>
     <member name="T:UnityEngine.WaitForSecondsRealtime">
       <summary>

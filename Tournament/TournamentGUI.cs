@@ -73,7 +73,7 @@ namespace Tournament
 			GUISliders.DecimalPlaces = 0;
 			GUISliders.UpperMargin = 0;
 
-            t.spawndis = GUISliders.DisplaySlider(0, "Spawn Distance", t.spawndis, 100f, 5000f, 0, new ToolTip("Spawn distance between teams"));
+            t.spawndis = GUISliders.DisplaySlider(0, "Spawn Distance", t.spawndis, 100f, 10000f, 0, new ToolTip("Spawn distance between teams"));
 			t.spawngap = GUISliders.DisplaySlider(1, "Spawn Gap Horizontal", t.spawngap, 0f, 500f, 0, new ToolTip("Spawn distance between team members left to right"));
             t.spawngap2 = GUISliders.DisplaySlider(2, "Spawn Gap Forward-Back", t.spawngap2, 0f, 1000f, 0, new ToolTip("Spawn distance between team members front to back"));
             t.minalt = GUISliders.DisplaySlider(3, "Min Alt", t.minalt, -500f, t.maxalt, 0, new ToolTip("Add to penalty time when below this"));
