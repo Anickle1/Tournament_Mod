@@ -620,6 +620,7 @@ namespace Tournament
                         teamCurrentHP += entry.Value.HPCUR;
                         oob = $"{Math.Floor((double)(entry.Value.OoBTime / 60f))}m{Math.Floor((double)entry.Value.OoBTime) % 60.0}s";
                         percentHP = $"{Math.Round((double)entry.Value.HP, 1)}%";
+                        //blocks//percentHP = $"{Math.Round((double)entry.Value.HPCUR, 1)} {Math.Round((double)entry.Value.HPMAX, 1)}";
                         //text = ((!flag) ? (text + string.Format("\n{2} {1,4} {0,6}", Math.Floor((double)(item2.Value.OoBTime / 60f)) + "m" + Math.Floor((double)item2.Value.OoBTime) % 60.0 + "s", Math.Round((double)item2.Value.HP, 1) + "%", item2.Value.BlueprintName)) : (text + string.Format("\n{0,-6} {1,-4} {2}", Math.Floor((double)(item2.Value.OoBTime / 60f)) + "m" + Math.Floor((double)item2.Value.OoBTime) % 60.0 + "s", Math.Round((double)item2.Value.HP, 1) + "%", item2.Value.BlueprintName)));
                     }
 
@@ -700,6 +701,7 @@ namespace Tournament
                     //    $"/{Math.Round(StaticConstructablesManager.constructables[targetIndex].PowerUsageCreationAndFuel.MaxPower, 0)}";
                     // power as available /max#
                     string power = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Power, 0)} / {Math.Round(targetConstruct.PowerUsageCreationAndFuel.MaxPower, 0)}";
+                    string speed = Math.Round(targetConstruct.Velocity.magnitude,0).ToString();
                     string altitude = Math.Round(targetConstruct.CentreOfMass.y, 0).ToString();
 
                     float closest = -1f;
@@ -739,8 +741,9 @@ namespace Tournament
                     GUI.Label(new Rect(xOffsetLabel, 152f, 90f, 38f), "Fuel:", _Left);
                     GUI.Label(new Rect(xOffsetLabel, 190f, 90f, 38f), "Battery:", _Left);
                     GUI.Label(new Rect(xOffsetLabel, 228f, 90f, 38f), "Power:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 266f, 90f, 38f), "Altitude:", _Left);
-                    GUI.Label(new Rect(xOffsetLabel, 304f, 90f, 38f), "Nearest Enemy:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 266f, 90f, 38f), "Speed:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 304f, 90f, 38f), "Altitude:", _Left);
+                    GUI.Label(new Rect(xOffsetLabel, 342f, 90f, 38f), "Nearest Enemy:", _Left);
 
                     GUI.Label(new Rect(xOffsetValue, 0f, 110f, 38f), name, _RightWrap);
                     GUI.Label(new Rect(xOffsetValue, 38f, 110f, 38f), hp, _Right);
@@ -749,8 +752,9 @@ namespace Tournament
                     GUI.Label(new Rect(xOffsetValue, 152f, 110f, 38f), fuel, _Right);
                     GUI.Label(new Rect(xOffsetValue, 190f, 110f, 38f), battery, _Right);
                     GUI.Label(new Rect(xOffsetValue, 228f, 110f, 38f), power, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 266f, 110f, 38f), altitude, _Right);
-                    GUI.Label(new Rect(xOffsetValue, 304f, 110f, 38f), nearest, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 266f, 110f, 38f), speed, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 304f, 110f, 38f), altitude, _Right);
+                    GUI.Label(new Rect(xOffsetValue, 342f, 110f, 38f), nearest, _Right);
 
 
 
@@ -1001,8 +1005,10 @@ namespace Tournament
                     BlueprintName = val.GetName(),
                     AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count,
                     HP = ((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (val.iMainStatus.GetFractionAliveBlocks() * 100f)),
-                    HPCUR = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberAliveBlocks()),
-                    HPMAX = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberBlocks())
+                    //HPCUR = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberAliveBlocks()),
+                    //HPMAX = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberBlocks())
+                    HPCUR = val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables(),
+                    HPMAX = val.iMainStatus.GetNumberBlocksIncludingSubConstructables()
                 });
             }
             if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
