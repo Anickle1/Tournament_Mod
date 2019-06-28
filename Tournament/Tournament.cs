@@ -23,6 +23,9 @@ using BrilliantSkies.Ftd.Planets;
 using BrilliantSkies.Ftd.Planets.World;
 using BrilliantSkies.GridCasts;
 using BrilliantSkies.Ftd.Planets.Instances.Factions;
+using BrilliantSkies.Core.Intersections;
+using BrilliantSkies.Ftd.Game.Pools;
+using BrilliantSkies.Ftd.Avatar.Items;
 
 namespace Tournament
 {
@@ -188,7 +191,9 @@ namespace Tournament
 
 		public List<TournamentEntry> entry_t2 = new List<TournamentEntry>();
 
-		public Tournament()
+        private static GridCasting _ourCaster = new GridCasting();
+
+        public Tournament()
 		{
 			_me = this;
 			_GUI = new TournamentGUI(_me);
@@ -358,10 +363,11 @@ namespace Tournament
                         MothershipId = id,
                         BlueprintName = constructable.GetName(),
                         AICount = constructable.BlockTypeStorage.MainframeStore.Blocks.Count,
-						HP = ((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (constructable.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (constructable.iMainStatus.GetFractionAliveBlocks() * 100f)),
-						HPCUR = (float)((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? constructable.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : constructable.iMainStatus.GetNumberAliveBlocks()),
-						HPMAX = (float)((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? constructable.iMainStatus.GetNumberBlocksIncludingSubConstructables() : constructable.iMainStatus.GetNumberBlocks())
-					});
+						//HP = ((constructable.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (constructable.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (constructable.iMainStatus.GetFractionAliveBlocks() * 100f)),
+                        HP = constructable.AllBasics.GetFractionAliveBlocksIncludingSubConstructables() * 100f,
+                        HPCUR = (float)constructable.AllBasics.GetNumberAliveBlocksIncludingSubConstructables(),
+                        HPMAX = (float)constructable.AllBasics.GetNumberBlocksIncludingSubConstructables()
+                    });
 				}
 			}
             started = true;
@@ -388,12 +394,12 @@ namespace Tournament
                 GameObject.Destroy(@object.gameObject);
             }
             cam = R_Avatars.JustOrbitCamera.InstantiateACopy().gameObject;
-            cam.gameObject.transform.position = new Vector3(-500f, 50f, 0f);
+            cam.gameObject.transform.position = new Vector3(-1000f, 50f, 0f);
             cam.gameObject.transform.rotation = Quaternion.LookRotation(Vector3.right);
             cam.AddComponent<MouseLook>();
             flycam = cam.GetComponent<MouseLook>();
 			flycam.enabled = true;
-			flycam.transform.position = new Vector3(-500f, 50f, 0f);
+			flycam.transform.position = new Vector3(-1000f, 50f, 0f);
 			flycam.transform.rotation = Quaternion.LookRotation(Vector3.right);
 			orbitcam = cam.GetComponent<MouseOrbit>();
             orbitcam.OperateRegardlessOfUiOptions = true;
@@ -691,7 +697,8 @@ namespace Tournament
                     //MainConstruct targetConstruct = StaticConstructablesManager.constructables[targetIndex];
 
                     string name = targetConstruct.blueprintName;
-                    string hp = $"{Math.Round(targetConstruct.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
+                    //string hp = $"{Math.Round(targetConstruct.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
+                    string hp = $"{Math.Round(targetConstruct.AllBasics.GetFractionAliveBlocksIncludingSubConstructables() * 100f, 1).ToString()}%";
                     string resources = $"{Math.Round(targetConstruct.RawResource.Material.Quantity, 0)}/{Math.Round(targetConstruct.RawResource.Material.Maximum, 0)}";
                     string ammo = $"{Math.Round(targetConstruct.Ammo.Ammo.Quantity, 0)}/{Math.Round(targetConstruct.Ammo.Ammo.Maximum, 0)}";
                     string fuel = $"{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Quantity, 0)}/{Math.Round(targetConstruct.PowerUsageCreationAndFuel.Fuel.Maximum, 0)}";
@@ -763,13 +770,14 @@ namespace Tournament
                 }
             }
 		}
-
+        // target in front of cam for info panel identifying whats being looked at
         public IMainConstructBlock getTarget()
         {
             IMainConstructBlock target = null;
 
             Transform myTransform = flycam.enabled ? flycam.transform : orbitcam.transform;
             GridCastReturn gridCastReturn = GridCasting.GridCastAllConstructables(new GridCastReturn(myTransform.position, myTransform.forward, 500.0f, 10, true));
+
             if (gridCastReturn.HitSomething)
             {
                 if (gridCastReturn.FirstHit.BlockHit.IsOnSubConstructable)
@@ -1004,11 +1012,10 @@ namespace Tournament
                     MothershipId = 0,
                     BlueprintName = val.GetName(),
                     AICount = val.BlockTypeStorage.MainframeStore.Blocks.Count,
-                    HP = ((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (val.iMainStatus.GetFractionAliveBlocks() * 100f)),
-                    //HPCUR = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberAliveBlocks()),
-                    //HPMAX = (float)((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? val.iMainStatus.GetNumberBlocksIncludingSubConstructables() : val.iMainStatus.GetNumberBlocks())
-                    HPCUR = val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables(),
-                    HPMAX = val.iMainStatus.GetNumberBlocksIncludingSubConstructables()
+                    //HP = ((val.BlockTypeStorage.MainframeStore.Blocks.Count > 0) ? (val.AllBasics.GetFractionAliveBlocksIncludingSubConstructables() * 100f) : (val.AllBasics.GetFractionAliveBlocks() * 100f)),
+                    HP = val.AllBasics.GetFractionAliveBlocksIncludingSubConstructables() * 100f,
+                    HPCUR = val.AllBasics.GetNumberAliveBlocksIncludingSubConstructables(),
+                    HPMAX = val.AllBasics.GetNumberBlocksIncludingSubConstructables()
                 });
             }
             if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
@@ -1088,12 +1095,12 @@ namespace Tournament
 				MainConstruct[] array = StaticConstructablesManager.constructables.ToArray();
 				foreach (MainConstruct val in array)
 				{
-                    Debug.Log("FixedUpdate ID: " + val.UniqueId);
+                    //Debug.Log("FixedUpdate ID: " + val.UniqueId);
                     int id = 0;
                     if (val.Drones.LoadedMothershipC != null)
                     {
                         id = val.Drones.LoadedMothershipC.UniqueId;
-                        Debug.Log("FixedUpdate mothership ID: " + val.Drones.LoadedMothershipC.UniqueId);
+                        //Debug.Log("FixedUpdate mothership ID: " + val.Drones.LoadedMothershipC.UniqueId);
                     }
                     string key = "" + val.UniqueId + "," + id;
                     UpdateCraft(val, key);
@@ -1120,9 +1127,9 @@ namespace Tournament
                 string key = "" + val.UniqueId + "," + id;
                 if (!HUDLog[(val.GetTeam()).Id][key].Disqual || !HUDLog[(val.GetTeam()).Id][key].Scrapping)
 				{
-					HUDLog[(val.GetTeam()).Id][key].HPCUR = (float)val.iMainStatus.GetNumberAliveBlocksIncludingSubConstructables();
-					HUDLog[(val.GetTeam()).Id][key].HP = val.iMainStatus.GetFractionAliveBlocksIncludingSubConstructables() * 100f;
-				}
+                    HUDLog[(val.GetTeam()).Id][key].HPCUR = (float)val.AllBasics.GetNumberAliveBlocksIncludingSubConstructables();
+                    HUDLog[(val.GetTeam()).Id][key].HP = val.AllBasics.GetFractionAliveBlocksIncludingSubConstructables() * 100f;
+                }
 				else
 				{
 					HUDLog[(val.GetTeam()).Id][key].HPCUR = 0f;

@@ -60,7 +60,10 @@
     <Reference Include="Ftd">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\From The Depths\From_The_Depths_Data\Managed\Ftd.dll</HintPath>
     </Reference>
-    <Reference Include="GridCasts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="GridCasts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\From The Depths\From_The_Depths_Data\Managed\GridCasts.dll</HintPath>
+    </Reference>
     <Reference Include="Modding">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\From The Depths\From_The_Depths_Data\Managed\Modding.dll</HintPath>
     </Reference>
