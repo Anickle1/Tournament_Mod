@@ -255,6 +255,7 @@ namespace Tournament
                     item.team_id.FactionInst().ResourceStore.SetResources(maxmat); // set faction resource to maxmat
                     if (selectableResourcesBool == true) //if central + indiviual resources on
                     {
+                        t1_res = item.res;
                         item.team_id.FactionInst().ResourceStore.SetResources(item.res); //override with indivual max
                     }
                 }
@@ -266,10 +267,12 @@ namespace Tournament
                         MainConstruct constructable = StaticConstructablesManager.constructables[StaticConstructablesManager.constructables.Count - 1];
                         if (constructable.RawResource.Material.Maximum >= item.res)
                         {
+                            if (item.res > t1_res) { t1_res = item.res; }
                             constructable.RawResource.Material.SetQuantity(item.res); //set to selected
                         }
                         else
                         {
+                            if (constructable.RawResource.Material.Maximum > t1_res) { t1_res = constructable.RawResource.Material.Maximum; }
                             constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum); //set to bp max
                         }
                     }
@@ -284,6 +287,7 @@ namespace Tournament
                     item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
                     if (selectableResourcesBool == true) //if central + indiviual resources on
                     {
+                        t2_res = item2.res;
                         item2.team_id.FactionInst().ResourceStore.SetResources(item2.res); //override with indivual max
                     }
                 }
@@ -295,10 +299,12 @@ namespace Tournament
                         MainConstruct constructable = StaticConstructablesManager.constructables[StaticConstructablesManager.constructables.Count - 1];
                         if (constructable.RawResource.Material.Maximum >= item2.res)
                         {
+                            if (item2.res > t2_res) { t2_res = item2.res; }
                             constructable.RawResource.Material.SetQuantity(item2.res); //set to selected
                         }
                         else
                         {
+                            if (constructable.RawResource.Material.Maximum > t2_res) { t2_res = constructable.RawResource.Material.Maximum; }
                             constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum); //set to bp max
                         }
                     }
