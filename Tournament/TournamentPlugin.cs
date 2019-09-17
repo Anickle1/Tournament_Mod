@@ -53,7 +53,8 @@ namespace Tournament
             @is.Header.Type = (InstanceType)4;
 			@is.Header.CommonSettings.AvatarAvailability = (AvatarAvailability)1;
 			@is.Header.CommonSettings.AvatarDamage = (AvatarDamage)1;
-			@is.Header.CommonSettings.ConstructableCleanUp = 0;
+            @is.Header.CommonSettings.ConstructableCleanUp = 0;
+            //@is.Header.CommonSettings.ConstructableCleanUpSettings.ConstructableCleanUp = 0;
 			@is.Header.CommonSettings.HeartStoneRequirement = 0;
 			@is.Header.CommonSettings.BuildModeRules = (BuildModeRules)1;
 			@is.Header.CommonSettings.SavingOptions = 0;

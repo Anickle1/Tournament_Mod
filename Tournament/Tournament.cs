@@ -331,7 +331,8 @@ namespace Tournament
             timer = 0f;
 			timerTotal = 0f;
 			timerTotal2 = Time.timeSinceLevelLoad;
-			InstanceSpecification.i.Header.CommonSettings.ConstructableCleanUp = (ConstructableCleanUp)1;
+            InstanceSpecification.i.Header.CommonSettings.ConstructableCleanUp = (ConstructableCleanUp)1;
+            //InstanceSpecification.i.Header.CommonSettings.ConstructableCleanUpSettings.ConstructableCleanUp = (ConstructableCleanUp)1;
 
 			orbitindex = 0;
             orbittarget = 0;
