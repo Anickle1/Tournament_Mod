@@ -250,8 +250,9 @@ namespace Tournament
                 //spawn
                 item.Spawn(spawndis, spawngap, spawngap2, entry_t1.Count, entry_t1.IndexOf(item));
 
-                if (localResourcesBool == false)
+                if (localResourcesBool == false) //central
                 {
+                    InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseCentralStore;
                     item.team_id.FactionInst().ResourceStore.SetResources(maxmat); // set faction resource to maxmat
                     if (selectableResourcesBool == true) //if central + indiviual resources on
                     {
@@ -259,8 +260,9 @@ namespace Tournament
                         item.team_id.FactionInst().ResourceStore.SetResources(item.res); //override with indivual max
                     }
                 }
-                else
+                else //local
                 {
+                    InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseLocalisedStores;
                     item.team_id.FactionInst().ResourceStore.SetResources(0); // set faction to 0
                     if (selectableResourcesBool == true) //if local + indiviual resources on
                     {
@@ -284,6 +286,7 @@ namespace Tournament
                 item2.Spawn(spawndis, spawngap, spawngap2, entry_t2.Count, entry_t2.IndexOf(item2));
                 if (localResourcesBool == false)
                 {
+                    //InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseCentralStore; //dont need to do twice
                     item2.team_id.FactionInst().ResourceStore.SetResources(maxmat);
                     if (selectableResourcesBool == true) //if central + indiviual resources on
                     {
@@ -310,7 +313,7 @@ namespace Tournament
                     }
                 }
             }
-            if (localResourcesBool == true && selectableResourcesBool == false) // local biut not individual so try set all vehicles to maxmat
+            if (localResourcesBool == true && selectableResourcesBool == false) // local but not individual so try set all vehicles to maxmat
             { 
                 InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseLocalisedStores;
                 foreach (MainConstruct constructable in StaticConstructablesManager.constructables)
@@ -324,10 +327,6 @@ namespace Tournament
                         constructable.RawResource.Material.SetQuantity(constructable.RawResource.Material.Maximum);
                     }
                 }
-            }
-            else
-            {
-                InstanceSpecification.i.Header.CommonSettings.LocalisedResourceMode = LocalisedResourceMode.UseCentralStore;
             }
         }
 

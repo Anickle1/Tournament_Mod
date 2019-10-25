@@ -19,7 +19,7 @@ namespace Tournament
 
         private BrilliantSkies.Ui.TreeSelection.TreeSelectorGuiElement<BlueprintFile, BlueprintFolder> _treeSelector;
 
-        public BrilliantSkies.ScriptableObjects.SO_LoadVehicleGUI _Style;
+        //public BrilliantSkies.ScriptableObjects.SO_LoadVehicleGUI _Style;
 
         private int sectionsNorthSouth, sectionsEastWest;
 
@@ -27,7 +27,7 @@ namespace Tournament
 
 		public TournamentGUI(Tournament tourny)
 		{
-			_Style = LazyLoader.LoadVehicle.Get();
+			//_Style = LazyLoader.LoadVehicle.Get();
             t = tourny;
 		}
 
@@ -41,8 +41,9 @@ namespace Tournament
 
 		public override void OnActivateGui()
 		{
-			_Style = LazyLoader.LoadVehicle.Get();
-			BlueprintFolder val = GameFolders.GetCombinedBlueprintFolder();
+			//_Style = LazyLoader.LoadVehicle.Get();
+			BlueprintFolder val = GameFolders.GetCombinedBlueprintFolder(false);
+ 
             sectionsNorthSouth = WorldSpecification.i.BoardLayout.NorthSouthBoardSectionCount - 1;
             sectionsEastWest = WorldSpecification.i.BoardLayout.EastWestBoardSectionCount - 1;
             if(t.eastWestBoard > sectionsEastWest)
@@ -62,6 +63,7 @@ namespace Tournament
 		public unsafe override void OnGui()
 		{
             GUILayout.BeginArea(new Rect(0f, 0f, 340f, 580f), "Select Contestants", GUI.skin.window);
+            _treeSelector.ScaleTheUi = true;
             _treeSelector.OnGui(new Rect(30f, 35f, 280f, 520f),(Action<BlueprintFile>)UpdateFileData);
             GUILayout.EndArea();
 
