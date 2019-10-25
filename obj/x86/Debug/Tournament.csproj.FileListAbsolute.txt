@@ -391,4 +391,4 @@ C:\repos\Tournament_Mod\bin\Debug\Ai.dll
 C:\repos\Tournament_Mod\bin\Debug\BytesHelper.dll
 C:\repos\Tournament_Mod\bin\Debug\GridCasts.dll
 C:\repos\Tournament_Mod\bin\Debug\Youtube.dll
-C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojResolveAssemblyReference.cache
+C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojAssemblyReference.cache
