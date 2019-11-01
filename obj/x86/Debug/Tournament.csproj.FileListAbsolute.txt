@@ -392,3 +392,4 @@ C:\repos\Tournament_Mod\bin\Debug\BytesHelper.dll
 C:\repos\Tournament_Mod\bin\Debug\GridCasts.dll
 C:\repos\Tournament_Mod\bin\Debug\Youtube.dll
 C:\repos\Tournament_Mod\obj\x86\Debug\Tournament.csprojAssemblyReference.cache
+C:\repos\Tournament_Mod\bin\Debug\Localisation.dll

@@ -131,7 +131,7 @@ namespace Tournament
 
 		public void Spawn(float dis, float gap, float gap2, int count, int pos)
 		{
-            MainConstruct val = BlueprintConverter.Convert(bp, 0, true);
+            MainConstruct val = BlueprintConverter.Convert(bp, SpawnInstructions.None);
             /*val.Drone.myJustLoadedDrones.Clear();
             foreach (MainConstruct m in val.MainArrayBasics.SVList)
             {
